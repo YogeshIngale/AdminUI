@@ -23,6 +23,7 @@ export class FormComponent implements OnInit {
     public baseUrl: string;
     public sectionUrl: string;
     constructor(private httpClient: HttpClient) {
+
         this.baseUrl = '${environment.apiHost}forms';
         this.sectionUrl = '${environment.apiHost}sections';
     }

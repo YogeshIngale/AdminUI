@@ -13,9 +13,7 @@ export class SignUpService {
     constructor(private httpClient: HttpClient, private baseService: BaseService) { }
 
     signUpUser(userObj): Observable<any> {
-
-        return this.httpClient.post(`${environment.apiHost}applicationusers`, userObj)
-            .pipe(
+        return this.httpClient.post(`${environment.apiHost}applicationusers`, userObj).pipe(
                 catchError(this.baseService.handleError)
             );
     }
