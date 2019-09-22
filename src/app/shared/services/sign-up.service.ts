@@ -19,13 +19,17 @@ export class SignUpService {
     }
 
     getJsonData(): Observable<any> {
-        return this.httpClient.get(`${environment.apiHost}login`).pipe(
+
+        return this.httpClient.get("../../assets/json/countries.json")
+            .pipe(
                 catchError(this.baseService.handleError)
             );
     }
 
     signInUser(userdata){
-       return this.httpClient.post(`${environment.apiHost}login`,userdata).pipe(catchError(this.baseService.handleError));
+
+       return this.httpClient.post(`${environment.apiHost}login`,userdata)
+        .pipe(catchError(this.baseService.handleError));
     }
 
 
