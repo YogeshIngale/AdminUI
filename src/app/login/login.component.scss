@@ -1,18 +1,20 @@
-$topnav-background-color: #222;
+$topnav-background-color: url('https://www.scienceindiafest.org/bg/bg.jpg');
 :host {
     display: block;
 }
 .login-page {
+    background: $topnav-background-color;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     overflow: auto;
-    background: $topnav-background-color;
     text-align: center;
     color: #fff;
     padding: 3em;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
     .col-lg-4 {
         padding: 0;
     }
@@ -39,7 +41,7 @@ $topnav-background-color: #222;
         -webkit-border-radius: 50px;
         border-radius: 50px;
         color: rgba(255, 255, 255, 0.8);
-        background: $topnav-background-color;
+        background: #0089cc;
         border: 2px solid rgba(255, 255, 255, 0.8);
         font-size: 18px;
         line-height: 40px;
@@ -88,8 +90,14 @@ $topnav-background-color: #222;
         padding: 0px 0;
     }
     .user-avatar {
+        width: 200px;
+        padding: 15px 11px;
         // -webkit-border-radius: 50%;
         // border-radius: 50%;
         // border: 2px solid #fff;
+    }
+
+    .register {
+        color: #000;
     }
 }

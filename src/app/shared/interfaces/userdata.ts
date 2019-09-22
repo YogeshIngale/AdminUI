@@ -16,7 +16,7 @@ export class Userdata {
     public line1 = '';
     public line2 = '';
     public city = '';
-    public state = 'Maharashtra';
+    public state = 'null';
     public postalcode = '';
     public country = '';
     public notes = '';
