@@ -22,7 +22,7 @@ export class FormListComponent implements OnInit {
 public baseUrl:string;
     constructor(private httpClient : HttpClient,private router: Router) {
         localStorage.removeItem('form');
-        this.baseUrl='${environment.apiHost}/forms';
+        this.baseUrl='http://localhost:3000/forms';
     }
 
     ngOnInit() {
