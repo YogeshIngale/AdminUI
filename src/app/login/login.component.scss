@@ -66,30 +66,30 @@ $topnav-background-color: #222;
 
     .form-group {
         padding: 2px 0;
-        input::-webkit-input-placeholder {
-            color: rgba(255, 255, 255, 0.6) !important;
-        }
+        // input::-webkit-input-placeholder {
+        //     color: rgba(255, 255, 255, 0.6) !important;
+        // }
 
-        input:-moz-placeholder {
-            /* Firefox 18- */
-            color: rgba(255, 255, 255, 0.6) !important;
-        }
+        // input:-moz-placeholder {
+        //     /* Firefox 18- */
+        //     color: rgba(255, 255, 255, 0.6) !important;
+        // }
 
-        input::-moz-placeholder {
-            /* Firefox 19+ */
-            color: rgba(255, 255, 255, 0.6) !important;
-        }
+        // input::-moz-placeholder {
+        //     /* Firefox 19+ */
+        //     color: rgba(255, 255, 255, 0.6) !important;
+        // }
 
-        input:-ms-input-placeholder {
-            color: rgba(255, 255, 255, 0.6) !important;
-        }
+        // input:-ms-input-placeholder {
+        //     color: rgba(255, 255, 255, 0.6) !important;
+        // }
     }
     .form-content {
         padding: 0px 0;
     }
     .user-avatar {
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        border: 2px solid #fff;
+        // -webkit-border-radius: 50%;
+        // border-radius: 50%;
+        // border: 2px solid #fff;
     }
 }
