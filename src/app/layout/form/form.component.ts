@@ -23,8 +23,8 @@ export class FormComponent implements OnInit {
     public baseUrl: string;
     public sectionUrl: string;
     constructor(private httpClient: HttpClient) {
-        this.baseUrl = 'http://localhost:3000/forms';
-        this.sectionUrl = 'http://localhost:3000/sections';
+        this.baseUrl = '${environment.apiHost}/forms';
+        this.sectionUrl = '${environment.apiHost}/sections';
     }
 
     ngOnInit() {
