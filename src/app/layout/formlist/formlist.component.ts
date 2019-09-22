@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-formlist',
@@ -22,7 +23,7 @@ export class FormListComponent implements OnInit {
 public baseUrl:string;
     constructor(private httpClient : HttpClient,private router: Router) {
         localStorage.removeItem('form');
-        this.baseUrl='${environment.apiHost}forms';
+        this.baseUrl=`${environment.apiHost}forms`;
     }
 
     ngOnInit() {

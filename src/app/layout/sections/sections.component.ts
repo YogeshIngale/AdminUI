@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 @Component({
     selector: 'app-sections',
     templateUrl: './sections.component.html',
@@ -24,8 +25,8 @@ export class SectionsComponent implements OnInit {
 public baseUrl:string;
     constructor(private httpClient : HttpClient,private modalService: NgbModal,private router: Router) {
         localStorage.removeItem('section');
-        this.baseUrl='${environment.apiHost}forms';
-        this.sectionUrl='${environment.apiHost}sections';
+        this.baseUrl=`${environment.apiHost}forms`;
+        this.sectionUrl=`${environment.apiHost}sections`;
     }
 
     ngOnInit() {
@@ -34,7 +35,8 @@ public baseUrl:string;
 
 
 
-gotoForm(){
+gotoForm(section){
+    localStorage.setItem('section',JSON.stringify(section));
     this.router.navigate(['/userform']);
 }
     editSection(content, section)
