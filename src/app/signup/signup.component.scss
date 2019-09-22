@@ -1,0 +1,175 @@
+// shared css for the login and signup page
+@import '../login/login.component.scss';
+// ::ng-deep .mat-step-header .mat-step-icon-selected {
+//     background-color: rgb(90, 86, 86);
+//  }
+
+.full-step-form {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    // border: 1px solid #fff;
+}
+
+.inner-step-div {
+    width: 300%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out; /** Chrome & Safari **/
+    -moz-transition: all 0.5s ease-in-out; /** Firefox **/
+    -o-transition: all 0.5s ease-in-out; /** Opera **/
+    height: 100%;
+}
+
+.step-form {
+    width: 33.33%;
+    float: left;
+}
+
+.left-0 {
+    left: 0%;;
+}
+
+.left-33{
+    left: -100%;
+}
+
+.left-66{
+    left: -200%;
+}
+
+// Form steps wrapper
+.form-steps {
+    width: 100%;
+    clear: both;
+
+    &:before,
+    &:after {
+        display: table;
+        content: '';
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+// Step wrapper
+.form-steps__step {
+    width: 33.33333%;
+    float: left;
+    padding: 1em;
+    text-align: center;
+    position: relative;
+    left: 15%;
+
+    // this is the progress line
+    &:after {
+        content: '';
+        background: #eee;
+        height: 0.4em;
+        top: 2.4em;
+        left: 50%;
+        width: 100%;
+        display: block;
+        position: absolute;
+        z-index: 1;
+    }
+
+    // we use the before for create a white space between the circle and the progress line
+    &:before {
+        content: '';
+        background: #fff;
+        height: 0.4em;
+        top: 2.4em;
+        left: 50%;
+        margin-left: -2em;
+        width: 0em;
+        display: block;
+        position: absolute;
+        z-index: 2;
+    }
+
+    // if is the last
+    &--last {
+        &:after {
+            display: none;
+        }
+    }
+
+    input{
+        background: transparent !important;
+    }
+
+    // if is the active (current) step
+    &--active {
+        // change the color of the circle
+        .form-steps__step-circle {
+            background: #7cb342;
+            border: 1px solid #33691e;
+            color: #fff;
+        }
+    }
+
+    // if is completed
+    &--completed {
+        // change the color of the progress bar
+        &:after {
+            background: #7cb342;
+        }
+
+        // change the color of the circle
+        .form-steps__step-circle {
+            background: #7cb342;
+            border: 1px solid #33691e;
+            color: #fff;
+
+            // when is completed we show the checkmark and hide the number
+            .form-steps__step-number {
+                display: none;
+            }
+
+            .form-steps__step-check {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+// The number of the step
+.form-steps__step-circle {
+    background: #eee;
+    border: 1px solid #bdbdbd;
+    line-height: 3.2em;
+    border-radius: 50%;
+    height: 3em;
+    width: 3em;
+    text-align: center;
+    color: #bdbdbd;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+    cursor: pointer;
+}
+
+// By default we hide the checkmark
+.form-steps__step-check {
+    display: none;
+}
+
+// The name of the step
+.form-step__step-name {
+    margin-top: 0.6em;
+    display: inline-block;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    white-space: nowrap;
+}
+
+.bottom-margin{
+    margin-bottom: 0.7rem !important;
+}

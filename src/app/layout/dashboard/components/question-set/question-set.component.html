@@ -1,0 +1,243 @@
+<div class="question-set-ui">
+    <div class="col-12 d-block mb-2">
+        <button type="button" class="btn btn-warning back-btn float-right" title="Go to Dashboard" (click)="goToFormsDashboard()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+    </div>
+    <div class="progress_container" *ngIf="questionSetPerPage.length > 0">
+        <p class="count">{{ currentQuestionSetIndex }}/{{ totalNonEmptyAssessmentData }}</p>
+
+        <app-progressbar [progressVal]="progressWidth"></app-progressbar>
+    </div>
+
+    <div class="question-set">
+        <ng-container *ngFor="let questionSet of questionSetPerPage; let topIndex = index">
+            <div class="w-100 m-0">
+                <h4 class="question-text" *ngIf="questionSet && questionSet.label != 'HTML'">
+                    {{ questionSet.label }}
+                </h4>
+
+                <div *ngIf="questionSet.content" [innerHTML]="questionSet.content"></div>
+            </div>
+
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'textfield'">
+                <div class="form-group">
+                    <input
+                        type="text"
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    />
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'number'">
+                <div class="form-group">
+                    <input
+                        type="number"
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    />
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'password'">
+                <div class="form-group">
+                    <input
+                        type="password"
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    />
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'email'">
+                <div class="form-group">
+                    <input
+                        type="email"
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    />
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'phoneNumber'">
+                <div class="form-group">
+                    <input
+                        type="tel"
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        [pattern]="questionSet.inputMask"
+                        autofocus
+                    />
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'datetime'">
+                <div class="form-group">
+                    <input
+                        type="datetime-local"
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    />
+                    <!--<ion-datetime displayFormat="YYYY-MM-DD hh:mm A" [name]="questionSet.key"
+                    pickerFormat="YYYY-MM-DD hh:mm A" [(ngModel)]="answerData[questionSet.key]" autofocus>
+                  </ion-datetime>-->
+                    <!-- <ion-datetime mode="ios" [name]="questionSet.key" display-format="h:mm A" picker-format="h:mm A"
+                    role="combobox" aria-expanded="false" aria-haspopup="true" aria-labelledby="ion-dt-1-lbl"
+                    value="1990-02-19T07:43Z" class="ios in-item hydrated" [(ngModel)]="answerData[questionSet.key]"
+                    autofocus></ion-datetime> -->
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'address'">
+                <div class="form-group">
+                    <textarea
+                        [name]="questionSet.key"
+                        class="form-control"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    >
+                    </textarea>
+                </div>
+            </div>
+
+            <!-- <div class="mt-2" *ngIf="questionSet && questionSet.type == 'signature'">
+           <div class="form-group">
+                <signature-pad class="canvas" id="signatureCanvas"></signature-pad>
+           </div>
+            <button ion-button color="light" (click)="drawClear()">Clear</button>
+            <button ion-button color="secondary" (click)="drawComplete(questionSet.key)">Done</button>
+        </div> -->
+
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'textarea'">
+                <div class="form-group">
+                    <textarea
+                        class="form-control"
+                        [name]="questionSet.key"
+                        [placeholder]="getPlaceholder(questionSet)"
+                        [(ngModel)]="answerData[questionSet.key]"
+                        [required]="questionSet?.validate?.required"
+                        autofocus
+                    >
+                    </textarea>
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'checkbox'">
+                <div class="custom-control custom-checkbox">
+                    <input
+                        type="checkbox"
+                        [ngClass]="questionSet.key"
+                        [name]="questionSet.key"
+                        (change)="requiredValidation('checkbox', questionSet.key)"
+                        class="custom-control-input"
+                        (click)="pushValues($event, questionSet.key)"
+                        [required]="questionSet?.validate?.required"
+                        [id]="'customCheckSingle' + topIndex"
+                        [checked]="isChecked"
+                        autofocus
+                    />
+                    <label class="custom-control-label" [attr.for]="'customCheckSingle' + topIndex"> {{ questionSet.label }} </label>
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'selectboxes'">
+                <ng-container *ngFor="let option of questionSet.values; let checkboxIndex = index">
+                    <div class="custom-control custom-checkbox">
+                        <input
+                            type="checkbox"
+                            (change)="requiredValidation('selectboxes', questionSet.key)"
+                            [ngClass]="questionSet.key"
+                            [name]="option.value"
+                            [value]="option.value"
+                            [(ngModel)]="answerData[questionSet.key][option.value]"
+                            [required]="questionSet?.validate?.required"
+                            [id]="'checkBox' + checkboxIndex"
+                            [checked]="setCheckboxValue(option.value, questionSet.key)"
+                            autofocus
+                        />
+                        <label class="custom-control-label" [attr.for]="'checkBox' + checkboxIndex">
+                            {{ option.label }}
+                        </label>
+                    </div>
+                </ng-container>
+            </div>
+            <!---->
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'radio'">
+                <ng-container *ngFor="let option of questionSet.values; let radioIndex = index; trackBy: identify">
+                    <div class="custom-control custom-radio">
+                        <input
+                            type="radio"
+                            [id]="'customRadio' + radioIndex"
+                            name="customRadio"
+                            [(ngModel)]="answerData[questionSet.key]"
+                            class="custom-control-input"
+                            (change)="
+                                checkConditionalStatus(questionSet, option.value);
+                                requiredValidation('radio', questionSet.key);
+                                setRadioValue(questionSet.key, option.value)
+                            "
+                            [value]="option.value"
+                            [ngClass]="questionSet.key"
+                            autofocus
+                        />
+                        <label class="custom-control-label" [attr.for]="'customRadio' + radioIndex">{{ option.label }}</label>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="mt-2" *ngIf="questionSet && questionSet.type == 'select'">
+                <select class="custom-select" [(ngModel)]="answerData[questionSet.key]" interface="popover">
+                    <option *ngFor="let option of questionSet.data.values" [value]="option.value" autofocus> {{ option.label }} </option>
+                </select>
+            </div>
+        </ng-container>
+    </div>
+    <footer class="check-in-footer" *ngIf="questionSetPerPage.length > 0">
+        <!-- <div class="logo-bottom" (click)="goToHome()"> -->
+        <!-- <ion-icon name="home" class="bottom-logo"></ion-icon> -->
+        <!-- </div> -->
+
+        <button type="button" class="btn btn-primary float-left" (click)="previous()" *ngIf="currentQuestionSetIndex != 1">
+            <!-- <ion-icon name="arrow-back" class="blue"></ion-icon> -->
+            &nbsp;&nbsp;PREVIOUS
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-primary float-right"
+            (click)="next()"
+            *ngIf="currentQuestionSetIndex != totalNonEmptyAssessmentData"
+            [disabled]="isDisabled"
+        >
+            NEXT&nbsp;&nbsp;
+            <!-- <ion-icon name="arrow-forward" class="blue"></ion-icon> -->
+        </button>
+        <button
+            type="submit"
+            class="btn btn-primary float-right"
+            (click)="app_modal.open()"
+            *ngIf="currentQuestionSetIndex == totalNonEmptyAssessmentData"
+            [disabled]="isDisabled"
+        >
+            SUBMIT&nbsp;&nbsp;
+            <!-- <ion-icon name="checkmark-circle"></ion-icon> -->
+        </button>
+    </footer>
+</div>
+
+<app-modal #app_modal (modalEvent)="submit()"></app-modal>

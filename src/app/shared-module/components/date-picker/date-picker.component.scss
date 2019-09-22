@@ -1,0 +1,13 @@
+:host ::ng-deep #datepicker .datepicker-input {
+    .custom-select {
+        width: 30%;
+    }
+
+    .dropdown-menu {
+        padding: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        transform: translate(0px, -42px);
+    }
+}

@@ -1,0 +1,32 @@
+.check-in-footer{
+    position: absolute;
+    width: 100%;
+    padding: 0px 1%;
+    bottom: 0;
+}
+
+.question-text{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.back-btn{
+    padding: 0.3rem 0.8rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.question-set-ui{
+    position: relative;
+    height: 500px;
+}
+.question-set{
+    max-height: 70%;
+    overflow-y: auto;
+    padding: 20px;
+}

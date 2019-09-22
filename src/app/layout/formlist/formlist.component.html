@@ -1,0 +1,42 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Forms'" [icon]="'fa-edit'"></app-page-header>
+
+    <div class="row">
+            <div class="col  col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                         Form List
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Section Name</th>
+                                    <th>Form Name</th>
+                                    <th>is Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of formlist; let i = index">
+                                    <th scope="row">{{item.formid}}</th>
+                                    <td>{{item.sectionid}}</td>
+                                    <td>{{item.formname}}</td>
+                                    <td>{{item.isactive}}</td>
+                                    <td>
+                                         <button type="button" (click)="editForm(item)" class="btn btn-primary btn-xs">Edit</button>
+
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+    </div>
+    <!-- /.row -->
+</div>

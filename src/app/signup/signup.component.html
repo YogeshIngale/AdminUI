@@ -1,0 +1,145 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <!-- <img class="user-avatar" src="assets/images/logo.png" width="100px" /> -->
+            <!-- <h1>SB Admin BS4 Angular8</h1> -->
+            <div class="form-steps">
+                <div class="form-steps__step">
+                    <!-- form-steps__step--completed -->
+                    <div class="form-steps__step-circle" (click)="selectStep(0)">
+                        <span class="form-steps__step-number">1</span>
+                        <span class="form-steps__step-check">&#x2713;</span>
+                    </div>
+                    <span class="form-step__step-name">Personal Info</span>
+                </div>
+
+                <div class="form-steps__step form-steps__step--last">
+                    <!-- form-steps__step--active -->
+                    <div class="form-steps__step-circle" (click)="selectStep(1)">
+                        <span class="form-steps__step-number">2</span>
+                        <span class="form-steps__step-check">&#x2713;</span>
+                    </div>
+                    <span class="form-step__step-name">Contact Info</span>
+                </div>
+                <!--
+                <div class="form-steps__step form-steps__step--last">
+                    <div class="form-steps__step-circle" (click)="selectStep(2)">
+                        <span class="form-steps__step-number">3</span>
+                        <span class="form-steps__step-check">&#x2713;</span>
+                    </div>
+                    <span class="form-step__step-name">Verification</span>
+                </div> -->
+            </div>
+            <form #regform="ngForm">
+                <div class="full-step-form">
+                    <div class="inner-step-div"
+                        [ngClass]="{ 'left-0': isFirstStep, 'left-33': isSecondStep, 'left-66': isThirdStep }">
+                        <div class="step-form">
+                            <div class="form-content">
+                                <div class="form-group bottom-margin">
+                                    <input type="text" name="firstname" [(ngModel)]="userdata.firstname"
+                                        class="form-control input-underline input-lg"
+                                        placeholder="{{ 'Full Name' | translate }}" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="text" name="lastname" [(ngModel)]="userdata.lastname"
+                                        class="form-control input-underline input-lg"
+                                        placeholder="{{ 'Last Name' | translate }}" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            name="birthDate"
+                                            placeholder="Please pick birth date"
+                                            [(ngModel)]="userdata.birthdate"
+                                            required
+                                        />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="text" name="line1" [(ngModel)]="userdata.line1"
+                                        class="form-control input-underline input-lg"
+                                        placeholder="{{ 'Education' | translate }}" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="text" name="line1" [(ngModel)]="userdata.username"
+                                        class="form-control input-underline input-lg"
+                                        placeholder="username" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="password" name="line1" [(ngModel)]="userdata.password"
+                                        class="form-control input-underline input-lg"
+                                        placeholder="password" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="radioBtnMale" name="radioBtn" value="Male"
+                                            [(ngModel)]="userdata.gender" class="custom-control-input" required />
+                                        <label class="custom-control-label" for="radioBtnMale">Male</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="radioBtnFeMale" name="radioBtn" value="Female"
+                                            [(ngModel)]="userdata.gender" class="custom-control-input" required />
+                                        <label class="custom-control-label" for="radioBtnFeMale">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="btn rounded-btn" (click)="selectStep(1)">{{ 'Next' | translate }}</a>&nbsp;
+                        </div>
+                        <div class="step-form">
+                            <div class="form-content">
+                                <div class="form-group bottom-margin">
+                                    <select class="custom-select" [(ngModel)]="userdata.state" name="state" required>
+                                        <option *ngFor="let state of states" [value]="state.value">{{ state.name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group bottom-margin">
+                                    <input type="text" class="form-control input-underline input-lg"
+                                        placeholder="{{ 'District' | translate }}" [(ngModel)]="userdata.line2"
+                                        name="district" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="text" class="form-control input-underline input-lg"
+                                        placeholder="{{ 'City' | translate }}" [(ngModel)]="userdata.city" name="city"
+                                        required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="text" class="form-control input-underline input-lg"
+                                        placeholder="{{ 'Email' | translate }}" [(ngModel)]="userdata.email"
+                                        name="email" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <input type="number" class="form-control input-underline input-lg"
+                                        placeholder="{{ 'Mobile Number' | translate }}" [(ngModel)]="userdata.phone"
+                                        name="phone" required />
+                                </div>
+                                <div class="form-group bottom-margin">
+                                    <textarea placeholder="Address" class="form-control input-underline input-lg"
+                                        rows="3" [(ngModel)]="userdata.notes" name="address" required></textarea>
+                                </div>
+                            </div>
+                            <a class="btn rounded-btn" (click)="selectStep(0)">{{ 'Previous' | translate }}</a>&nbsp;
+                            <button class="btn rounded-btn" (click)="register(regform)" type="submit">{{ 'Register' | translate }}</button>
+                        </div>
+                        <!-- <div class="step-form">
+                            <div class="form-content">
+                                <div class="form-group bottom-margin">
+                                    <input
+                                        type="text"
+                                        class="form-control input-underline input-lg"
+                                        placeholder="{{ 'Enter OTP for verification' | translate }}"
+                                    />
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <a class="btn rounded-btn" [routerLink]="['/dashboard']">{{ 'Register' | translate }}</a
+                >&nbsp;
+                <a class="btn rounded-btn" [routerLink]="['/login']">{{ 'Log in' | translate }}</a> -->
+            </form>
+        </div>
+    </div>
+</div>

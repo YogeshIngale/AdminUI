@@ -1,0 +1,23 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Forms'" [icon]="'fa-edit'"></app-page-header>
+
+    <div class="row">
+            <div class="col  col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                        {{formObj?.formname}}
+                        </div>
+                        <div class="card-body table-responsive">
+                                <formio [form]='{"title":formObj.formname ,"components":formObj.formData.components}' [submission]="answeredformData"></formio>
+
+                        </div>
+                        <div class="card-footer">
+                           <input type="button" class="btn btn-primary" (click)="submitform()" value="Submit"/>
+                           </div>
+                    </div>
+
+                </div>
+
+    </div>
+    <!-- /.row -->
+</div>

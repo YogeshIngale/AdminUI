@@ -1,0 +1,24 @@
+
+    <div class="row" *ngIf="!isFormNotSubmited">
+
+            <ng-container *ngFor="let formObj of forms; let i = index">
+                <div class="col-xl-3 col-lg-6 col-sm-6 mb-4" (click)="viewForm(formObj.form)">
+                    <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="0" [label]="formObj.form.formname"></app-stat>
+                </div>
+            </ng-container>
+        <!--
+              <div class="col-xl-3 col-lg-6">
+             <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'"></app-stat>
+              </div>
+            <div class="col-xl-3 col-lg-6">
+            <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" ></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
+        </div> -->
+    </div>
+    <ng-container *ngIf="isFormNotSubmited">
+            <question-set [formJsonData]="checkInObj" (formsDashBoardEvent)="onFormsVisible($event)" ></question-set>
+            <!-- <app-form-io [formJsonData]="checkInObj" (formsDashBoardEvent)="onFormsVisible($event)"></app-form-io> -->
+        </ng-container>
+
