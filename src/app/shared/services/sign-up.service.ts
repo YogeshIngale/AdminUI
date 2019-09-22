@@ -22,7 +22,7 @@ export class SignUpService {
 
     getJsonData(): Observable<any> {
 
-        return this.httpClient.get(`${environment.apiHost}login`)
+        return this.httpClient.get("../../assets/json/countries.json")
             .pipe(
                 catchError(this.baseService.handleError)
             );
