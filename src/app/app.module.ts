@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { ToastrModule } from 'ngx-toastr';
+import { TokenInterceptor } from './app.interceptor';
 
 @NgModule({
     imports: [
@@ -21,7 +22,13 @@ import { ToastrModule } from 'ngx-toastr';
         ToastrModule.forRoot()
     ],
     declarations: [AppComponent],
-    providers: [AuthGuard,DatePipe],
+    providers: [AuthGuard, DatePipe,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

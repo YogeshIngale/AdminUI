@@ -1,24 +1,38 @@
-
-    <div class="row" *ngIf="!isFormNotSubmited">
-
-            <ng-container *ngFor="let formObj of forms; let i = index">
-                <div class="col-xl-3 col-lg-6 col-sm-6 mb-4" (click)="viewForm(formObj.form)">
-                    <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="0" [label]="formObj.form.formname"></app-stat>
-                </div>
-            </ng-container>
-        <!--
-              <div class="col-xl-3 col-lg-6">
-             <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'"></app-stat>
-              </div>
-            <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" ></app-stat>
+<!-- <div class="row" *ngIf="!isFormNotSubmited">
+    <ng-container *ngFor="let formObj of forms; let i = index">
+        <div class="col-xl-3 col-lg-6 col-sm-6 mb-4" (click)="viewForm(formObj.form)">
+            <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="0" [label]="formObj.form.formname"></app-stat>
         </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
-        </div> -->
-    </div>
-    <ng-container *ngIf="isFormNotSubmited">
-            <question-set [formJsonData]="checkInObj" (formsDashBoardEvent)="onFormsVisible($event)" ></question-set>
-            <!-- <app-form-io [formJsonData]="checkInObj" (formsDashBoardEvent)="onFormsVisible($event)"></app-form-io> -->
-        </ng-container>
+    </ng-container>
+</div>
+<ng-container *ngIf="isFormNotSubmited">
+    <question-set [formJsonData]="checkInObj" (formsDashBoardEvent)="onFormsVisible($event)"></question-set>
+</ng-container> -->
+<h2 class="text-info mb-4 text-center">
+    <u>Welcome to India International Science Festival</u>
+</h2>
+<p>
+    Science festivals are vibrant expression of the cultural importance of science and technology of a nation. It gives scientists,
+    inventors and researchers a chance to interact closely with students and citizens from all walks of life. Science festivals offer many
+    different forms of engagement such as, lectures, dialogues, panel discussions and debates; through handson demonstrations, shows,
+    exhibitions, and workshops; in form of science-related theatre, cafes, music, and stand-up comedy. The goal of the science festivals is
+    to engage citizens with science in ways that are inspirational and empowering. Science festivals are the inspiring celebrations of the
+    fascinating world of science and technology.
+</p>
 
+<p>
+    India International Science Festival (IISF) launched in 2015 is a celebration to promote Science and Technology and demonstrate how
+    science could lead India towards a developed nation within a short span of time. The aim is to engage public with science and celebrate
+    the joy of science and show the ways how science, technology, engineering and mathematics (STEM) provide us with the solutions to
+    improve our lives. Ministry of Science and Technology and Ministry of Earth Sciences in association with Vijnana Bharati (VIBHA), has
+    created a unique platform of India International Science Festival which intends to inspire curiosity and make learning more rewarding.
+</p>
+
+<p>
+    The goal of the Science festivity is to help youth, develop 21st century skills, with a focus on scientific knowledge, creativity,
+    critical thinking, problem-solving, and teamwork. One longterm objective is to encourage students to study and work in scientific
+    fields. The focus on the myriad faces behind some of the fascinating discoveries will inject scientific attitude in the masses and will
+    give us the power to create new possibilities. Once we get young people interested in acquiring new knowledge, asking questions, and
+    starting the quest for the answers, we will accomplish our goal. IISF is a science outreach marathon not a science sprint. We hope, this
+    effort will fuel India’s drive toward becoming Vishwa Guru.
+</p>

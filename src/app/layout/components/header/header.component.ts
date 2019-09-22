@@ -27,9 +27,9 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         this.pushRightClass = 'push-right';
-        if(localStorage.getItem('userDetails')){
+        if (localStorage.getItem('userDetails')) {
             this.userdata = JSON.parse(localStorage.getItem('userDetails'));
-            console.log(this.userdata);
+            // console.log(this.userdata);
         }
     }
 
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
+        localStorage.clear();
     }
 
     changeLang(language: string) {

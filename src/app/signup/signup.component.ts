@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { CommonToastrService } from '../shared/services/common-toastr-service.service';
 import { Router } from '@angular/router';
 import { Userdata } from '../shared/interfaces/userdata';
-import { HttpHeaders,HttpClient  } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -19,18 +19,19 @@ export class SignupComponent implements OnInit {
     public isThirdStep = false;
     public userdata: Userdata = new Userdata();
     public sectionUrl: string;
-    public baseUrl:string;
+    public baseUrl = environment.apiHost;
 
     @ViewChild('regform', { static: false }) public form: NgForm;
     public countriesArray = [];
     public countryIndex = 0;
     public statesArray = [];
     public countryObj = null;
-
-    constructor(private signUpService: SignUpService, private httpClient :HttpClient, private toastr: CommonToastrService, private router: Router) { }
+    public loading = false;
+    constructor(private signUpService: SignUpService, private httpClient: HttpClient, private toastr: CommonToastrService, private router: Router) { }
 
     ngOnInit() {
-        this.signUpService.getJsonData().subscribe((res) => {
+
+        this.signUpService.getJsonData("../../assets/json/countries.json").subscribe((res) => {
             this.countriesArray = res['countries'];
         })
     }
@@ -72,26 +73,31 @@ export class SignupComponent implements OnInit {
     //        });
     // }
     register(regform: NgForm) {
+
         if (!regform.valid) {
             this.toastr.showInfo('Please fill all fields');
             return;
         }
         this.userdata.isActive = 1;
-        return this.httpClient.post(this.baseUrl,this.userdata,{
+        return this.httpClient.post(`${this.baseUrl}applicationusers`, this.userdata, {
             headers: new HttpHeaders({
-                'content-type':  'application/json',
-              })
+                'content-type': 'application/json',
+            })
         })
-          .subscribe((reponse)=>{
-            this.toastr.showSuccess('You are registered successfully');
-            this.router.navigate(['/login']);
-             });
+            .subscribe((reponse) => {
+
+                this.toastr.showSuccess('You are registered successfully');
+                this.router.navigate(['/login']);
+            }, (error) => {
+
+                this.toastr.showError('Server error');
+            });
 
         // this.signUpService.signUpUser(this.userdata).subscribe((res) => {
         //     this.toastr.showSuccess('You are registered successfully');
         //     this.router.navigate(['/login']);
         // }, (error) => {
-        //     this.toastr.showError('Server Error');
+        //     this.toastr.showError('Server error');
         // })
     }
 

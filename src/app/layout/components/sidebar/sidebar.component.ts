@@ -12,7 +12,7 @@ export class SidebarComponent implements OnInit {
     collapsed: boolean;
     showMenu: string;
     pushRightClass: string;
-userRole:string;
+    userRole: string;
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
     constructor(private translate: TranslateService, public router: Router) {
@@ -25,9 +25,10 @@ userRole:string;
                 this.toggleSidebar();
             }
         });
+            let userRes = JSON.parse(localStorage.getItem('userDetails'));
+            this.userRole = userRes['usertype'];
 
-        let userRes = JSON.parse(localStorage.getItem('userDetails'));
-        this.userRole=userRes['usertype'];
+
 
     }
 
