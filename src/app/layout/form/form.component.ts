@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-form',
@@ -23,8 +24,8 @@ export class FormComponent implements OnInit {
     public baseUrl: string;
     public sectionUrl: string;
     constructor(private httpClient: HttpClient) {
-        this.baseUrl = '${environment.apiHost}forms';
-        this.sectionUrl = '${environment.apiHost}sections';
+        this.baseUrl = `${environment.apiHost}forms`;
+        this.sectionUrl = `${environment.apiHost}sections`;
     }
 
     ngOnInit() {
