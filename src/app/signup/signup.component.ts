@@ -5,6 +5,8 @@ import { NgForm } from '@angular/forms';
 import { CommonToastrService } from '../shared/services/common-toastr-service.service';
 import { Router } from '@angular/router';
 import { Userdata } from '../shared/interfaces/userdata';
+import { HttpHeaders,HttpClient  } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-signup',
@@ -16,6 +18,9 @@ export class SignupComponent implements OnInit {
     public isSecondStep = false;
     public isThirdStep = false;
     public userdata: Userdata = new Userdata();
+    public sectionUrl: string;
+    public baseUrl:string;
+
     @ViewChild('regform', { static: false }) public form: NgForm;
 
     public states = [
@@ -55,10 +60,12 @@ export class SignupComponent implements OnInit {
         { value: 'Uttarakhand', name: 'Uttarakhand' },
         { value: 'West Bengal', name: 'West Bengal' }
     ];
-    constructor(private signUpService: SignUpService, private toastr: CommonToastrService, private router: Router) { }
+    constructor(private signUpService: SignUpService, private httpClient : HttpClient, private toastr: CommonToastrService, private router: Router) { }
 
     ngOnInit() {
-
+        this.baseUrl=environment.apiHost+'applicationusers';
+        this.sectionUrl=environment.apiHost+'sections';
+       // this.getSections();
     }
 
     selectStep(indexNum) {
@@ -85,7 +92,18 @@ export class SignupComponent implements OnInit {
                 this.isThirdStep = false;
         }
     }
+    // public getSections(){
+    //     debugger;
 
+    //     return this.httpClient.get('http://13.233.76.250:3000/api/sections', {
+    //       headers: new HttpHeaders({
+    //            'Content-Type':  'application/json',
+    //          })
+    //     }).subscribe((reponse)=>{
+    //         debugger;
+    //        let data= reponse['data'];
+    //        });
+    // }
     register(regform: NgForm) {
         if (!regform.valid) {
             this.toastr.showInfo('Please fill all fields');
@@ -93,12 +111,22 @@ export class SignupComponent implements OnInit {
         }
         console.log(JSON.stringify(this.userdata));
         this.userdata.isActive = 1;
-        this.signUpService.signUpUser(this.userdata).subscribe((res) => {
+        return this.httpClient.post(this.baseUrl,this.userdata,{
+            headers: new HttpHeaders({
+                'content-type':  'application/json',
+              })
+        })
+          .subscribe((reponse)=>{
             this.toastr.showSuccess('You are registered successfully');
             this.router.navigate(['/login']);
-        }, (error) => {
-            this.toastr.showError('Server Error');
-        })
+             });
+
+        // this.signUpService.signUpUser(this.userdata).subscribe((res) => {
+        //     this.toastr.showSuccess('You are registered successfully');
+        //     this.router.navigate(['/login']);
+        // }, (error) => {
+        //     this.toastr.showError('Server Error');
+        // })
     }
 
 }
