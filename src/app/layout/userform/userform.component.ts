@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-userform',
@@ -40,8 +41,8 @@ public baseUrl:string;
 public submissionbaseUrl:string;
     constructor(private httpClient : HttpClient,private router: Router) {
         localStorage.removeItem('form');
-        this.baseUrl = '${environment.apiHost}forms';
-        this.submissionbaseUrl = '${environment.apiHost}userforms';
+        this.baseUrl = `${environment.apiHost}forms/getFormbyId`;
+        this.submissionbaseUrl = `${environment.apiHost}userforms`;
 
         this.answeredformData = {
             data: {}
@@ -49,14 +50,14 @@ public submissionbaseUrl:string;
     }
 
     ngOnInit() {
-        this.getForms();
+        this.getFormbysectionid();
     }
 
 
-    public getForms(){
+    public getFormbysectionid(){
         debugger;
-
-        return this.httpClient.get(this.baseUrl, {
+        let sectionObj = JSON.parse(localStorage.getItem('section'));
+        return this.httpClient.get(this.baseUrl+"?sectionid="+sectionObj.sectionid, {
           headers: new HttpHeaders({
                'Content-Type':  'application/json',
              })
@@ -79,6 +80,7 @@ public submissionbaseUrl:string;
                'Content-Type':  'application/json',
              })
         }).subscribe((reponse)=>{
+            localStorage.removeItem('section');
             this.router.navigate(['/sections']);
            });
     }
