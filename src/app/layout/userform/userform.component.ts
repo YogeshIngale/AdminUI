@@ -40,8 +40,8 @@ public baseUrl:string;
 public submissionbaseUrl:string;
     constructor(private httpClient : HttpClient,private router: Router) {
         localStorage.removeItem('form');
-        this.baseUrl = '${environment.apiHost}/forms';
-        this.submissionbaseUrl = '${environment.apiHost}/userforms';
+        this.baseUrl = '${environment.apiHost}forms';
+        this.submissionbaseUrl = '${environment.apiHost}userforms';
 
         this.answeredformData = {
             data: {}

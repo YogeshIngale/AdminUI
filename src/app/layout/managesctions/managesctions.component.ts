@@ -24,8 +24,8 @@ export class ManageSectionsComponent implements OnInit {
 public baseUrl:string;
     constructor(private httpClient : HttpClient,private modalService: NgbModal,private router: Router) {
         localStorage.removeItem('section');
-        this.baseUrl='${environment.apiHost}/forms';
-        this.sectionUrl='${environment.apiHost}/sections';
+        this.baseUrl='${environment.apiHost}forms';
+        this.sectionUrl='${environment.apiHost}sections';
     }
 
     ngOnInit() {

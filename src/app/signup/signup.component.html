@@ -37,12 +37,12 @@
                         <div class="step-form">
                             <div class="form-content">
                                 <div class="form-group bottom-margin">
-                                    <input type="text" name="firstname" [(ngModel)]="userdata.firstname"
+                                    <input type="text" autocomplete="off"name="firstname" [(ngModel)]="userdata.firstname"
                                         class="form-control input-underline input-lg"
                                         placeholder="{{ 'Full Name' | translate }}" required />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="text" name="lastname" [(ngModel)]="userdata.lastname"
+                                    <input type="text" autocomplete="off" name="lastname" [(ngModel)]="userdata.lastname"
                                         class="form-control input-underline input-lg"
                                         placeholder="{{ 'Last Name' | translate }}" required />
                                 </div>
@@ -53,32 +53,33 @@
                                             name="birthDate"
                                             placeholder="Please pick birth date"
                                             [(ngModel)]="userdata.birthdate"
+                                            autocomplete="off"
                                             required
                                         />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="text" name="line1" [(ngModel)]="userdata.line1"
+                                    <input type="text" name="line1" autocomplete="off" [(ngModel)]="userdata.line1"
                                         class="form-control input-underline input-lg"
                                         placeholder="{{ 'Education' | translate }}" required />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="text" name="line1" [(ngModel)]="userdata.username"
+                                    <input type="text" name="line1" autocomplete="off" [(ngModel)]="userdata.username"
                                         class="form-control input-underline input-lg"
                                         placeholder="username" required />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="password" name="line1" [(ngModel)]="userdata.password"
+                                    <input type="password" name="line1" autocomplete="off" [(ngModel)]="userdata.password"
                                         class="form-control input-underline input-lg"
                                         placeholder="password" required />
                                 </div>
                                 <div class="form-group bottom-margin">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="radioBtnMale" name="radioBtn" value="Male"
+                                        <input type="radio" id="radioBtnMale" autocomplete="off" name="radioBtn" value="Male"
                                             [(ngModel)]="userdata.gender" class="custom-control-input" required />
                                         <label class="custom-control-label" for="radioBtnMale">Male</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="radioBtnFeMale" name="radioBtn" value="Female"
+                                        <input type="radio" id="radioBtnFeMale" autocomplete="off" name="radioBtn" value="Female"
                                             [(ngModel)]="userdata.gender" class="custom-control-input" required />
                                         <label class="custom-control-label" for="radioBtnFeMale">Female</label>
                                     </div>
@@ -96,22 +97,22 @@
                                 </div>
 
                                 <div class="form-group bottom-margin">
-                                    <input type="text" class="form-control input-underline input-lg"
+                                    <input type="text" autocomplete="off" class="form-control input-underline input-lg"
                                         placeholder="{{ 'District' | translate }}" [(ngModel)]="userdata.line2"
                                         name="district" required />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="text" class="form-control input-underline input-lg"
+                                    <input type="text" autocomplete="off" class="form-control input-underline input-lg"
                                         placeholder="{{ 'City' | translate }}" [(ngModel)]="userdata.city" name="city"
                                         required />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="text" class="form-control input-underline input-lg"
+                                    <input type="text" autocomplete="off" class="form-control input-underline input-lg"
                                         placeholder="{{ 'Email' | translate }}" [(ngModel)]="userdata.email"
                                         name="email" required />
                                 </div>
                                 <div class="form-group bottom-margin">
-                                    <input type="number" class="form-control input-underline input-lg"
+                                    <input type="number" autocomplete="off" class="form-control input-underline input-lg"
                                         placeholder="{{ 'Mobile Number' | translate }}" [(ngModel)]="userdata.phone"
                                         name="phone" required />
                                 </div>
