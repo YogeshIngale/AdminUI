@@ -62,7 +62,7 @@
 .form-steps__step {
     width: 33.33333%;
     float: left;
-    padding: 1em;
+    padding: 1em 0em 0em 0em;
     text-align: center;
     position: relative;
     left: 15%;
@@ -70,7 +70,7 @@
     // this is the progress line
     &:after {
         content: '';
-        background: #eee;
+        background: #ccc;
         height: 0.4em;
         top: 2.4em;
         left: 50%;
@@ -78,6 +78,7 @@
         display: block;
         position: absolute;
         z-index: 1;
+        // box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     }
 
     // we use the before for create a white space between the circle and the progress line
@@ -142,18 +143,19 @@
 
 // The number of the step
 .form-steps__step-circle {
-    background: #eee;
+    background: #fff;
     border: 1px solid #bdbdbd;
-    line-height: 3.2em;
+    line-height: 3em;
     border-radius: 50%;
     height: 3em;
     width: 3em;
     text-align: center;
-    color: #bdbdbd;
+    color: #000;
     margin: 0 auto;
     position: relative;
     z-index: 3;
     cursor: pointer;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 // By default we hide the checkmark
@@ -173,3 +175,9 @@
 .bottom-margin{
     margin-bottom: 0.7rem !important;
 }
+
+.bg-white{
+    background: #fff;
+}
+
+
