@@ -12,7 +12,7 @@ import {
 import { StatModule } from '../../shared';
 import { QuestionSetComponent } from './components/question-set/question-set.component';
 import { FormsModule } from '@angular/forms';
-import { SharedModuleModule } from 'src/app/shared-module/shared-module.module';
+import { SharedModule } from 'src/app/shared-module/shared-module.module';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { FormIoComponent } from './components/form-io/form-io.component';
 import { FormioModule } from 'angular-formio';
@@ -24,7 +24,7 @@ import { FormioModule } from 'angular-formio';
         DashboardRoutingModule,
         StatModule,
         FormsModule,
-        SharedModuleModule,
+        SharedModule,
         FormioModule
     ],
     declarations: [

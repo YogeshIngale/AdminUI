@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
+import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
 @Component({
     selector: 'app-managesections',
     templateUrl: './managesctions.component.html',
@@ -22,8 +23,9 @@ export class ManageSectionsComponent implements OnInit {
 
     public sectionList:[];
     public sectionUrl: string;
+    public loading = false;
 public baseUrl:string;
-    constructor(private httpClient : HttpClient,private modalService: NgbModal,private router: Router) {
+    constructor(private httpClient : HttpClient,private modalService: NgbModal,private router: Router,private toastr:CommonToastrService) {
         localStorage.removeItem('section');
         this.baseUrl=`${environment.apiHost}forms`;
         this.sectionUrl=`${environment.apiHost}sections`;
@@ -47,14 +49,17 @@ public baseUrl:string;
         this.modalService.open(content, { size: 'lg' });
     }
     public getSections(){
-        debugger;
 
         return this.httpClient.get(this.sectionUrl, {
           headers: new HttpHeaders({
                'Content-Type':  'application/json',
              })
         }).subscribe((reponse)=>{
+
             this.sectionList = reponse['data'];
-           });
+           },(error)=>{
+
+            this.toastr.showError('Server error');
+        });
     }
 }

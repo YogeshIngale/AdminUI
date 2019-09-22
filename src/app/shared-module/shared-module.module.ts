@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PageHeaderModule } from '../shared';
 import { ButtonsComponent, AlertComponent, ModalComponent, CollapseComponent, DatePickerComponent, DropdownComponent, PaginationComponent, PopOverComponent, ProgressbarComponent, TabsComponent, RatingComponent, TooltipComponent, TimepickerComponent } from './components';
 import { SharedRoutingModule } from './shared-routing.module';
-import { ToastrModule } from 'ngx-toastr';
-import { CommonToastrService } from '../shared/services/common-toastr-service.service';
-
 @NgModule({
     imports: [
         CommonModule,
@@ -15,7 +12,7 @@ import { CommonToastrService } from '../shared/services/common-toastr-service.se
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
-        PageHeaderModule
+        PageHeaderModule,
     ],
     declarations: [
         ButtonsComponent,
@@ -46,6 +43,9 @@ import { CommonToastrService } from '../shared/services/common-toastr-service.se
         RatingComponent,
         TooltipComponent,
         TimepickerComponent
-    ]
+    ],
+    providers: [
+        NgbActiveModal,
+      ]
 })
-export class SharedModuleModule { }
+export class SharedModule { }

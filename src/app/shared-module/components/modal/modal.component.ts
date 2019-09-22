@@ -8,7 +8,9 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 })
 export class ModalComponent {
     @Input('routing_url') public routing_url = '';
-    @ViewChild('conrent', { static: false }) content:ModalComponent;
+    @Input('modalTitle') public modalTitle = '';
+    @Input('modalBody') public modalBody = '';
+    @ViewChild('content', { static: false }) content:any;
     closeResult: string;
     @Output('modalEvent') modalEvent = new EventEmitter<any>();
     constructor(private modalService: NgbModal, public activeModal: NgbActiveModal) { }

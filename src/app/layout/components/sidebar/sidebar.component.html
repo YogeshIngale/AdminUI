@@ -1,8 +1,12 @@
-<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
-    <div class="list-group" *ngIf="userRole==='admin'">
+<nav class="sidebar" [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }">
+    <div class="list-group" *ngIf="userRole === 'admin'; else endUserMenu">
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;
             <span>{{ 'Dashboard' | translate }}</span>
+        </a>
+        <a routerLink="/sections" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-list-alt"></i>&nbsp;
+            <span>{{ 'Sections' | translate }}</span>
         </a>
         <!-- <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
@@ -12,32 +16,38 @@
             <i class="fa fa-fw fa-table"></i>&nbsp;
             <span>{{ 'Tables' | translate }}</span>
         </a> -->
-        <a [routerLink]="['/createform']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-edit"></i>&nbsp;
-            <span>Create Form</span>
-        </a>
+
         <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-table"></i>&nbsp;
             <span>{{ 'Forms' | translate }}</span>
         </a>
-        <a [routerLink]="['/managesections']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/createform']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-edit"></i>&nbsp;
+            <span>Create Form</span>
+        </a>
+        <!-- <a [routerLink]="['/managesections']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-table"></i>&nbsp;
             <span>Manage Sections</span>
-        </a>
+        </a> -->
         <!-- <a [routerLink]="['/form-view']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-table"></i>&nbsp;
             <span>View Form</span>
         </a> -->
-
     </div>
-    <div class="list-group" *ngIf="userRole===''">
-        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
-            <span>{{ 'Dashboard' | translate }}</span>
-        </a>
-    </div>
-    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
-        <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+    <ng-template #endUserMenu>
+        <div class="list-group">
+            <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+                <span>{{ 'Dashboard' | translate }}</span>
+            </a>
+            <a routerLink="/sections" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+                <span>{{ 'Sections' | translate }}</span>
+            </a>
+        </div>
+    </ng-template>
+    <div class="toggle-button" [ngClass]="{ collapsed: collapsed }" (click)="toggleCollapsed()">
+        <i class="fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}"></i>&nbsp;
         <span>{{ 'Collapse Sidebar' | translate }}</span>
     </div>
 </nav>

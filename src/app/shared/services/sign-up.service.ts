@@ -18,9 +18,9 @@ export class SignUpService {
             );
     }
 
-    getJsonData(): Observable<any> {
+    getJsonData(url): Observable<any> {
 
-        return this.httpClient.get("../../assets/json/countries.json")
+        return this.httpClient.get(url)
             .pipe(
                 catchError(this.baseService.handleError)
             );

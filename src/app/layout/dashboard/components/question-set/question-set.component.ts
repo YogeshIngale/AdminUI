@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
 
 @Component({
     selector: 'question-set',
@@ -41,6 +42,7 @@ export class QuestionSetComponent implements OnInit {
     @Input('formJsonData') public formJsonData: any;
     public formObj = {};
     @Output('formsDashBoardEvent') public formsDashBoardEvent = new EventEmitter<any>();
+    public loading = false;
 
 
 
@@ -48,7 +50,8 @@ export class QuestionSetComponent implements OnInit {
         public datepipe: DatePipe,
         public httpClient: HttpClient,
         public baseService: BaseService,
-        public router: Router
+        public router: Router,
+        public toastr: CommonToastrService
     ) {
 
     }

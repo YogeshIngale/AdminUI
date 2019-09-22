@@ -6,19 +6,19 @@
 <!-- <div class="card-body"> -->
 
 <!-- <button class="btn btn-primary" (click)="open(content)">Large modal</button> -->
-<ng-template #content let-c="close" let-d="dismiss">
+<ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title">Modal title</h4>
-        <button type="button" class="close" aria-label="Close" (click)="c.close('Cross click')">
+        <h4 class="modal-title">{{modalTitle}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Dismiss click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>One fine body&hellip;</p>
+        <p>{{modalBody}}&hellip;</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="submitForm()">Ok</button>
-        <button type="button" class="btn btn-secondary" (click)="c.close('Cross click')" >Close</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Cross click')" >Close</button>
     </div>
 </ng-template>
 <!-- </div> -->
