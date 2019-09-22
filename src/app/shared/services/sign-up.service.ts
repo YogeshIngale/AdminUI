@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { BaseService } from './base.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class SignUpService {
 
     signUpUser(userObj): Observable<any> {
 
-        return this.httpClient.post(`http://localhost:3000/applicationusers`, userObj)
+        return this.httpClient.post(`${environment.apiHost}applicationusers`, userObj)
             .pipe(
                 catchError(this.baseService.handleError)
             );
@@ -21,7 +22,7 @@ export class SignUpService {
 
     getJsonData(): Observable<any> {
 
-        return this.httpClient.get(`http://localhost:3000/login`)
+        return this.httpClient.get(`${environment.apiHost}login`)
             .pipe(
                 catchError(this.baseService.handleError)
             );
@@ -29,7 +30,7 @@ export class SignUpService {
 
     signInUser(userdata){
 
-       return this.httpClient.post(`http://localhost:3000/login`,userdata)
+       return this.httpClient.post(`${environment.apiHost}login`,userdata)
         .pipe(catchError(this.baseService.handleError));
     }
 
