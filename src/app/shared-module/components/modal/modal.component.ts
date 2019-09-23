@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-modal',
@@ -10,13 +10,15 @@ export class ModalComponent {
     @Input('routing_url') public routing_url = '';
     @Input('modalTitle') public modalTitle = '';
     @Input('modalBody') public modalBody = '';
-    @ViewChild('content', { static: false }) content:any;
+    @ViewChild('content', { static: false }) content: any;
     closeResult: string;
     @Output('modalEvent') modalEvent = new EventEmitter<any>();
+    modalRef: NgbModalRef;
     constructor(private modalService: NgbModal, public activeModal: NgbActiveModal) { }
 
     open() {
-        this.modalService.open(this.content).result.then((result) => {
+        this.modalRef = this.modalService.open(this.content);
+        this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -37,7 +39,8 @@ export class ModalComponent {
         }
     }
 
-   public submitForm() {
+    public submitForm() {
         this.modalEvent.emit();
+        this.modalRef.close();
     }
 }
