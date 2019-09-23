@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -11,11 +11,12 @@ import { CommonToastrService } from 'src/app/shared/services/common-toastr-servi
     styleUrls: ['./userform.component.scss'],
     animations: [routerTransition()]
 })
-export class UserFormComponent implements OnInit {
-    public answeredformData: any;
-    public modalTitle ="Confirmation";
+export class UserFormComponent implements OnInit, AfterViewInit {
+    public answeredformData: any = {};
+    public isViewForm = false;
+    public modalTitle = "Confirmation";
     public modalBody = "Are you sure you want to submit this form?";
-
+    public requiredQuesArray = [];
 
     public formObj: Object = {
         sectionid: 0,
@@ -53,7 +54,13 @@ export class UserFormComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+
+    ngAfterViewInit() {
+        this.isViewForm = false;
         this.getFormbysectionid();
+
     }
 
 
@@ -68,6 +75,47 @@ export class UserFormComponent implements OnInit {
 
             this.formlist = reponse['data'];
             this.formObj = this.formlist[0];
+            let formData = this.formObj['formData'].components;
+            if ('components' in this.formObj['formData']) {
+                if (formData.length > 0) {
+                    formData.forEach((element, index) => {
+                        let keyVal = {
+                            key: '',
+                            isRequired: false,
+                            isdepandant: false
+                        };
+                        if ('validate' in element) {
+                            if ('required' in element.validate) {
+                                if ('conditional' in element) {
+                                    if ('when' in element.conditional) {
+                                        if (element.conditional.when === '') {
+                                            keyVal = {
+                                                key: element.key,
+                                                isRequired: element.validate.required,
+                                                isdepandant: false
+                                            };
+                                        } else {
+                                            keyVal = {
+                                                key: element.key,
+                                                isRequired: element.validate.required,
+                                                isdepandant: true
+                                            };
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (keyVal.isRequired === true) {
+                            this.requiredQuesArray.push(keyVal);
+                        }
+                    });
+                }
+            }
+            setTimeout(() => {
+                this.isViewForm = true;
+            }, 100);
+            console.log(this.requiredQuesArray);
+            console.log(this.formObj['formData'].components);
         }, (error) => {
 
             this.toastr.showError('Server error');
@@ -80,6 +128,25 @@ export class UserFormComponent implements OnInit {
         this.answeredformObj['userid'] = userRes['userid'];
         this.answeredformObj['sectionid'] = this.formObj['sectionid'];
         this.answeredformObj['formAnswerdData'] = this.answeredformData;
+        let ansKeysVal = this.answeredformObj['formAnswerdData'].data;
+        let ansKeys = Object.keys(this.answeredformObj['formAnswerdData'].data);
+        // console.log((this.answeredformObj['formAnswerdData']));
+        console.log((this.answeredformData));
+        let requiredElementsFields = [];
+        console.log(this.requiredQuesArray);
+        console.log(ansKeys);
+        this.requiredQuesArray.forEach((element, index) => {
+            for (let key of ansKeys) {
+                if ((element.key == key) && (!element.isdepandant) && ansKeysVal[key] == '') {
+                    console.log(element.key);
+                    requiredElementsFields.push(false);
+                }
+            }
+        });
+        if (requiredElementsFields.length > 0) {
+            this.toastr.showInfo('Plese fill required fields with star.');
+            return false;
+        }
 
         this.httpClient.post(this.submissionbaseUrl, this.answeredformObj, {
             headers: new HttpHeaders({
@@ -99,5 +166,25 @@ export class UserFormComponent implements OnInit {
         localStorage.setItem('form', JSON.stringify(form));
 
         this.router.navigate(['/createform']);
+    }
+
+    elementInViewport(el) {
+        let top = el.offsetTop;
+        let left = el.offsetLeft;
+        let width = el.offsetWidth;
+        let height = el.offsetHeight;
+
+        while (el.offsetParent) {
+            el = el.offsetParent;
+            top += el.offsetTop;
+            left += el.offsetLeft;
+        }
+
+        return (
+            top >= window.pageYOffset &&
+            left >= window.pageXOffset &&
+            (top + height) <= (window.pageYOffset + window.innerHeight) &&
+            (left + width) <= (window.pageXOffset + window.innerWidth)
+        );
     }
 }
