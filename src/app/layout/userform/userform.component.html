@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-footer">
                     <input type="submit" *ngIf="!isFormSubmitted" class="btn btn-primary" (click)="submitform()" value="Submit" />
-                    <button class="btn btn-primary" (click)="downloadPdf()">Print Page</button>
+                    <button class="btn btn-primary" *ngIf="isFormSubmitted" (click)="downloadPdf()">Print Page</button>
                 </div>
             </div>
         </div>

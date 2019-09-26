@@ -198,7 +198,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
 
     downloadPdf() {
         const elementToPrint = document.getElementById('obrz'); //The html element to become a pdf
-        const pdf = new jsPDF('p', 'pt', 'a3');
+        const pdf = new jsPDF('p', 'pt', 'a4');
         pdf.addHTML(elementToPrint, () => {
             pdf.save('print_form.pdf');
         });
