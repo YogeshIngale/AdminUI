@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
+import { BaseService } from 'src/app/shared/services/base.service';
 @Component({
     selector: 'app-sections',
     templateUrl: './sections.component.html',
@@ -21,13 +22,16 @@ export class SectionsComponent implements OnInit {
         formData: ''
     };
 
-    public sectionList: [];
+    public sectionList = [];
     public sectionUrl: string;
+    public userforms: string;
     public baseUrl: string;
-    constructor(private httpClient: HttpClient, private modalService: NgbModal, private router: Router, private toastr: CommonToastrService) {
+    constructor(private httpClient: HttpClient, private modalService: NgbModal, private router: Router, private toastr: CommonToastrService, private baseService: BaseService) {
         localStorage.removeItem('section');
+        localStorage.removeItem('userformdata');
         this.baseUrl = `${environment.apiHost}forms`;
         this.sectionUrl = `${environment.apiHost}sections`;
+        this.userforms = `${environment.apiHost}userforms`;
     }
 
     ngOnInit() {
@@ -56,7 +60,45 @@ export class SectionsComponent implements OnInit {
             })
         }).subscribe((reponse) => {
             //
-            this.sectionList = reponse['data'];
+            let sectionListArray = reponse['data'];
+            let user = JSON.parse(localStorage.getItem('userDetails'));
+            let userid = {
+                "userid": user.userid
+            }
+            this.httpClient.get(this.baseService.formUrlParam(this.userforms, userid), {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                })
+            }).subscribe((res) => {
+                let setionsAllowed = res['data'];
+                let viewSections = [];
+                if (setionsAllowed.length>0) {
+                    sectionListArray.forEach(element => {
+                        setionsAllowed.forEach(sectionAllowed => {
+                            if ((sectionAllowed.userid == user.userid) && (element.sectionid == sectionAllowed.sectionid)) {
+
+                                if (viewSections != null && viewSections != undefined) {
+                                    if (viewSections.length > 0) {
+                                        let findindex = viewSections.findIndex(x => (x.sectionid == element.sectionid));
+                                        if (findindex == (-1)) {
+                                            viewSections.push(element);
+                                        }
+                                    } else {
+                                        // debugger;
+                                        viewSections.push(element);
+                                        let formData = sectionAllowed.formAnswerdData;
+                                        localStorage.setItem('userformdata', JSON.stringify(formData));
+                                    }
+                                }
+
+                            }
+                        });
+                    });
+                    this.sectionList = viewSections;
+                } else {
+                    this.sectionList = sectionListArray;
+                }
+            });
         }, (error) => {
             //
             this.toastr.showError('Server error');

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
 
+import * as jsPDF from 'jspdf'
 @Component({
     selector: 'app-userform',
     templateUrl: './userform.component.html',
@@ -17,7 +18,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     public modalTitle = "Confirmation";
     public modalBody = "Are you sure you want to submit this form?";
     public requiredQuesArray = [];
-
+    public isFormSubmitted: boolean;
     public formObj: Object = {
         sectionid: 0,
         formname: '',
@@ -45,6 +46,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     public submissionbaseUrl: string;
     constructor(private httpClient: HttpClient, private router: Router, private toastr: CommonToastrService) {
         localStorage.removeItem('form');
+        this.isFormSubmitted = false;
         this.baseUrl = `${environment.apiHost}forms/getFormbyId`;
         this.submissionbaseUrl = `${environment.apiHost}userforms`;
 
@@ -54,6 +56,12 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        if (localStorage.getItem('userformdata')) {
+            this.isFormSubmitted = true;
+            this.answeredformData = JSON.parse(localStorage.getItem('userformdata'));
+            console.log(this.answeredformData);
+        }
+
     }
 
 
@@ -186,5 +194,13 @@ export class UserFormComponent implements OnInit, AfterViewInit {
             (top + height) <= (window.pageYOffset + window.innerHeight) &&
             (left + width) <= (window.pageXOffset + window.innerWidth)
         );
+    }
+
+    downloadPdf() {
+        const elementToPrint = document.getElementById('obrz'); //The html element to become a pdf
+        const pdf = new jsPDF('p', 'pt', 'a3');
+        pdf.addHTML(elementToPrint, () => {
+            pdf.save('print_form.pdf');
+        });
     }
 }

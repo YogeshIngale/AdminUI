@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Forms'" [icon]="'fa-edit'"></app-page-header>
 
-    <div class="row">
+    <div class="row" id="obrz">
         <div class="col  col-lg-12">
             <div class="card">
                 <div class="card-header">
@@ -12,10 +12,12 @@
                         id="formio"
                         [form]="{ title: formObj.formname, components: formObj.formData.components }"
                         [submission]="answeredformData"
+                        [readOnly]="isFormSubmitted"
                     ></formio>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" (click)="submitform()" value="Submit" />
+                    <input type="submit" *ngIf="!isFormSubmitted" class="btn btn-primary" (click)="submitform()" value="Submit" />
+                    <button class="btn btn-primary" (click)="downloadPdf()">Print Page</button>
                 </div>
             </div>
         </div>
