@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
             let userResObjects = Object.keys(userRes);
             if (userResObjects.length > 0) {
                 let responseObj: Userdata = userRes['data'];
-                this.toastr.showSuccess('Welocome ' + responseObj.firstname + ' ' + responseObj.lastname);
+                this.toastr.showSuccess('Welcome ' + responseObj.firstname + ' ' + responseObj.lastname);
                 localStorage.setItem('isLoggedin', 'true');
                 localStorage.setItem('userDetails', JSON.stringify(responseObj));
                 if (responseObj['usertype'] === 'admin') {
