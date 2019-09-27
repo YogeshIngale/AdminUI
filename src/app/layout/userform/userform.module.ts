@@ -6,9 +6,10 @@ import { UserFormComponent } from './userform.component';
 import { PageHeaderModule } from '../../shared';
 import { FormioModule } from 'angular-formio';
 import { SharedModule } from 'src/app/shared-module/shared-module.module';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-    imports: [CommonModule, UserFormRoutingModule, PageHeaderModule, FormsModule, FormioModule, SharedModule],
+    imports: [CommonModule, UserFormRoutingModule, PageHeaderModule, FormsModule, FormioModule, SharedModule, FileUploadModule],
     declarations: [UserFormComponent]
 })
 export class UserFormModule { }

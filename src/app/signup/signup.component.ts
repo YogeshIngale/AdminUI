@@ -8,6 +8,7 @@ import { Userdata } from '../shared/interfaces/userdata';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { BaseService } from '../shared/services/base.service';
 
 @Component({
     selector: 'app-signup',
@@ -21,7 +22,8 @@ export class SignupComponent implements OnInit {
     public userdata: Userdata = new Userdata();
     public sectionUrl: string;
     public baseUrl = environment.apiHost;
-    public emailUrl = "http://www.scienceindiafest.org/iisf-registration/members/sendMailByApi";
+    // public emailUrl = "http://www.scienceindiafest.org/iisf-registration/members/sendMailByApi";
+    public emailUrl = "http://dashboard.scienceindiafest.org/mail/testmail.php";
 
     @ViewChild('regform', { static: false }) public form: NgForm;
     public countriesArray = [];
@@ -29,7 +31,7 @@ export class SignupComponent implements OnInit {
     public statesArray = [];
     public countryObj = null;
     public loading = false;
-    constructor(private signUpService: SignUpService, private httpClient: HttpClient, private toastr: CommonToastrService, private router: Router, private location: Location) { }
+    constructor(private signUpService: SignUpService, private httpClient: HttpClient, private toastr: CommonToastrService, private router: Router, private location: Location, private baseService: BaseService) { }
 
     ngOnInit() {
 
@@ -37,7 +39,8 @@ export class SignupComponent implements OnInit {
             this.countriesArray = res['countries'];
         })
 
-        this.emailUrl = this.location['_platformLocation']['location']['origin'] + '/' + this.emailUrl;
+        // this.emailUrl = this.location['_platformLocation']['location']['origin'] + '/' + this.emailUrl;
+        this.emailUrl = this.emailUrl;
     }
 
     selectStep(indexNum) {
@@ -90,12 +93,35 @@ export class SignupComponent implements OnInit {
         })
             .subscribe((reponse: any) => {
                 let signUpResponce = reponse['data'];
-
-                if (signUpResponce['CODE'] == 'EXISTS') {
-                    this.toastr.showInfo('User with same username and email already exists');
+                if ('CODE' in signUpResponce) {
+                    if (signUpResponce['CODE'] == 'EXISTS') {
+                        this.toastr.showInfo('User with same username and email already exists');
+                    } else {
+                        let userdata = signUpResponce;
+                        let bodyText = "Thank you for registering in IISF 2019. Your Username is " + userdata.password + " and password is " + userdata.password;
+                        let fullName = userdata.firstname + " " + userdata.lastname;
+                        let emailTemplate = {
+                            "title": "Registration Successful",
+                            "mailBody": bodyText,
+                            "toMail": userdata.email,
+                            "fullName": fullName
+                        }
+                        // console.log(emailTemplate);
+                        this.router.navigate(['/login']);
+let pareamData="toMail="+userdata.email+"&mailBody="+bodyText +"&=title='Registration Successful'";
+                        this.httpClient.post(this.emailUrl, pareamData, {
+                            headers: new HttpHeaders({
+                                'content-type': 'application/x-www-form-urlencoded',
+                            })
+                        }).subscribe(res => {
+                            this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
+                        }, (error) => {
+                            // this.toastr.showError('Server error');
+                        });
+                    }
                 } else {
-                    let userdata = reponse;
-                    let bodyText = "Thank you for registering in IISF 2019. Your Username is" + userdata.password + " and password is" + userdata.password;
+                    let userdata = signUpResponce;
+                    let bodyText = "Thank you for registering in IISF 2019. Your Username is " + userdata.password + " and password is " + userdata.password;
                     let fullName = userdata.firstname + " " + userdata.lastname;
                     let emailTemplate = {
                         "title": "Registration Successful",
@@ -103,14 +129,21 @@ export class SignupComponent implements OnInit {
                         "toMail": userdata.email,
                         "fullName": fullName
                     }
+                    // console.log(emailTemplate);
                     this.router.navigate(['/login']);
 
-                    this.httpClient.post(this.emailUrl, emailTemplate).subscribe(res => {
+                    let pareamData="toMail="+userdata.email+"&mailBody="+bodyText +"&=title='Registration Successful'";
+                        this.httpClient.post(this.emailUrl, pareamData, {
+                            headers: new HttpHeaders({
+                                'content-type': 'application/x-www-form-urlencoded',
+                            })
+                        }).subscribe(res => {
                         this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
                     }, (error) => {
                         // this.toastr.showError('Server error');
                     });
                 }
+
             }, (error) => {
 
                 this.toastr.showError('Server error');
