@@ -105,11 +105,11 @@ export class SignupComponent implements OnInit {
                             "mailBody": bodyText,
                             "toMail": userdata.email,
                             "fullName": fullName
-                        }
+                        };
                         // console.log(emailTemplate);
                         this.router.navigate(['/login']);
-let pareamData="toMail="+userdata.email+"&mailBody="+bodyText +"&=title='Registration Successful'";
-                        this.httpClient.post(this.emailUrl, pareamData, {
+                        // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
+                        this.httpClient.post(this.emailUrl, emailTemplate, {
                             headers: new HttpHeaders({
                                 'content-type': 'application/x-www-form-urlencoded',
                             })
@@ -132,12 +132,12 @@ let pareamData="toMail="+userdata.email+"&mailBody="+bodyText +"&=title='Registr
                     // console.log(emailTemplate);
                     this.router.navigate(['/login']);
 
-                    let pareamData="toMail="+userdata.email+"&mailBody="+bodyText +"&=title='Registration Successful'";
-                        this.httpClient.post(this.emailUrl, pareamData, {
-                            headers: new HttpHeaders({
-                                'content-type': 'application/x-www-form-urlencoded',
-                            })
-                        }).subscribe(res => {
+                    // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
+                    this.httpClient.post(this.emailUrl, emailTemplate, {
+                        headers: new HttpHeaders({
+                            'content-type': 'application/x-www-form-urlencoded',
+                        })
+                    }).subscribe(res => {
                         this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
                     }, (error) => {
                         // this.toastr.showError('Server error');

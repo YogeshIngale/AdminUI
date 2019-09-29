@@ -77,7 +77,6 @@ export class UserFormComponent implements OnInit, AfterViewInit {
             this.answeredformData = JSON.parse(localStorage.getItem('userformdata'));
             console.log(this.answeredformData);
         }
-
     }
 
 

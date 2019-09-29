@@ -1,3 +1,63 @@
-<p>
-  system-users works!
-</p>
+<div>
+    <app-page-header [heading]="'Users'" [icon]="'fa-users'"></app-page-header>
+</div>
+
+    <div class="row">
+        <!-- <div class="col-lg-12"></div> -->
+        <div class="col-lg-4 col-md-4 form-view">
+            <ng-container *ngFor="let item of usersList; let i = index">
+                <div class="col-12 mb-3" (click)="getFormbysectionid(item,i)">
+                    <app-stat [bgClass]="'warning'" [icon]="'fa-user'" [count]="0" [label]="item.userid"></app-stat>
+                </div>
+            </ng-container>
+        </div>
+        <div class="col-lg-8 col-md-8">
+            <div class="row" id="obrz">
+                <div class="col-lg-12">
+                    <div class="card form-view">
+                        <div class="card-header">
+                            {{ formObj?.formname }}
+                        </div>
+                        <div class="card-body table-responsive" *ngIf="isViewForm">
+                            <formio
+                                id="formio"
+                                [form]="{ title: formObj.formname, components: formObj.formData.components }"
+                                [submission]="answeredformData"
+                                [readOnly]="true"
+                            ></formio>
+                            <div class="container mt-5 mb-5" *ngIf="formObj.isFileUpload">
+                                <div class="row">
+                                    <div class="col-md-9 mt-5">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Size</th>
+                                                    <!-- <th>Actions</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of uploader.queue">
+                                                    <td>
+                                                        {{ item?.file?.name }}
+                                                    </td>
+                                                    <td>{{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB</td>
+                                                    <td>
+                                                        <!-- <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
+                                             <span class="glyphicon glyphicon-trash"></span>
+                                             Remove
+                                            </button> -->
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

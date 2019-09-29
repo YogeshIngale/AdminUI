@@ -27,9 +27,6 @@ export class SidebarComponent implements OnInit {
         });
             let userRes = JSON.parse(localStorage.getItem('userDetails'));
             this.userRole = userRes['usertype'];
-
-
-
     }
 
     ngOnInit() {
