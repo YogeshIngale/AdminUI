@@ -1,10 +1,13 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
+import * as jsPDF from 'jspdf'
+import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 
+const URL = environment.apiHost + 'upload';
 @Component({
     selector: 'app-userform',
     templateUrl: './userform.component.html',
@@ -12,17 +15,30 @@ import { CommonToastrService } from 'src/app/shared/services/common-toastr-servi
     animations: [routerTransition()]
 })
 export class UserFormComponent implements OnInit, AfterViewInit {
+    public uploader: FileUploader = new FileUploader({
+        url: URL,
+        disableMultipart: false,
+        autoUpload: true,
+        method: 'post',
+        itemAlias: 'attachment',
+        allowedFileType: ['image', 'pdf', 'compress', 'doc', 'xls', 'ppt']
+    });
+    public hasBaseDropZoneOver: boolean = false;
+    public hasAnotherDropZoneOver: boolean = false;
+    public formData = new FormData();
     public answeredformData: any = {};
     public isViewForm = false;
     public modalTitle = "Confirmation";
     public modalBody = "Are you sure you want to submit this form?";
     public requiredQuesArray = [];
-
+    public isFormSubmitted: boolean;
+    public attachment = [];
     public formObj: Object = {
         sectionid: 0,
         formname: '',
         isactive: 1,
-        formData: ''
+        formData: '',
+        isFileUpload: 0
     };
     public answeredformObj: Object = {
         formid: 0,
@@ -43,17 +59,24 @@ export class UserFormComponent implements OnInit, AfterViewInit {
 
     public baseUrl: string;
     public submissionbaseUrl: string;
+    percentDone: number;
+    uploadSuccess: boolean;
     constructor(private httpClient: HttpClient, private router: Router, private toastr: CommonToastrService) {
         localStorage.removeItem('form');
+        this.isFormSubmitted = false;
         this.baseUrl = `${environment.apiHost}forms/getFormbyId`;
         this.submissionbaseUrl = `${environment.apiHost}userforms`;
-
         this.answeredformData = {
             data: {}
         };
     }
 
     ngOnInit() {
+        if (localStorage.getItem('userformdata')) {
+            this.isFormSubmitted = true;
+            this.answeredformData = JSON.parse(localStorage.getItem('userformdata'));
+            console.log(this.answeredformData);
+        }
     }
 
 
@@ -128,6 +151,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
         this.answeredformObj['userid'] = userRes['userid'];
         this.answeredformObj['sectionid'] = this.formObj['sectionid'];
         this.answeredformObj['formAnswerdData'] = this.answeredformData;
+        this.answeredformObj['attachment'] = this.attachment;
         let ansKeysVal = this.answeredformObj['formAnswerdData'].data;
         let ansKeys = Object.keys(this.answeredformObj['formAnswerdData'].data);
         // console.log((this.answeredformObj['formAnswerdData']));
@@ -186,5 +210,46 @@ export class UserFormComponent implements OnInit, AfterViewInit {
             (top + height) <= (window.pageYOffset + window.innerHeight) &&
             (left + width) <= (window.pageXOffset + window.innerWidth)
         );
+    }
+
+    downloadPdf() {
+        const elementToPrint = document.getElementById('obrz'); //The html element to become a pdf
+        const pdf = new jsPDF('p', 'pt', 'a3');
+        pdf.addHTML(elementToPrint, () => {
+            pdf.save('print_form.pdf');
+        });
+    }
+    public fileOverBase(e: any): void {
+        this.hasBaseDropZoneOver = e;
+    }
+
+    public fileOverAnother(e: any): void {
+        this.hasAnotherDropZoneOver = e;
+    }
+
+    public onFileSelected(event: EventEmitter<File[]>) {
+        const file: File = event[0];
+        let formData = new FormData();
+        formData.append('file', file);
+        console.log(this.formData);
+        let url = environment.apiHost + 'upload';
+        this.httpClient.post(url, formData, { reportProgress: true, observe: 'events' })
+            .subscribe(resEvent => {
+                if (resEvent.type === HttpEventType.UploadProgress) {
+                    this.percentDone = Math.round(100 * resEvent.loaded / resEvent.total);
+                } else if (resEvent instanceof HttpResponse) {
+                    console.log(resEvent);
+                    let fileObj = {
+                        filename: resEvent['body']['filename'],
+                        originalname: resEvent['body']['originalname']
+                    }
+                    this.attachment.push(fileObj);
+                    this.uploadSuccess = true;
+                }
+                // });
+            }, (error) => {
+
+                this.toastr.showError('Server error');
+            });
     }
 }

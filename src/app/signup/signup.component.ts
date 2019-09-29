@@ -6,7 +6,9 @@ import { CommonToastrService } from '../shared/services/common-toastr-service.se
 import { Router } from '@angular/router';
 import { Userdata } from '../shared/interfaces/userdata';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { BaseService } from '../shared/services/base.service';
 
 @Component({
     selector: 'app-signup',
@@ -20,6 +22,8 @@ export class SignupComponent implements OnInit {
     public userdata: Userdata = new Userdata();
     public sectionUrl: string;
     public baseUrl = environment.apiHost;
+    // public emailUrl = "http://www.scienceindiafest.org/iisf-registration/members/sendMailByApi";
+    public emailUrl = "http://dashboard.scienceindiafest.org/mail/testmail.php";
 
     @ViewChild('regform', { static: false }) public form: NgForm;
     public countriesArray = [];
@@ -27,13 +31,16 @@ export class SignupComponent implements OnInit {
     public statesArray = [];
     public countryObj = null;
     public loading = false;
-    constructor(private signUpService: SignUpService, private httpClient: HttpClient, private toastr: CommonToastrService, private router: Router) { }
+    constructor(private signUpService: SignUpService, private httpClient: HttpClient, private toastr: CommonToastrService, private router: Router, private location: Location, private baseService: BaseService) { }
 
     ngOnInit() {
 
         this.signUpService.getJsonData("../../assets/json/countries.json").subscribe((res) => {
             this.countriesArray = res['countries'];
         })
+
+        // this.emailUrl = this.location['_platformLocation']['location']['origin'] + '/' + this.emailUrl;
+        this.emailUrl = this.emailUrl;
     }
 
     selectStep(indexNum) {
@@ -84,10 +91,59 @@ export class SignupComponent implements OnInit {
                 'content-type': 'application/json',
             })
         })
-            .subscribe((reponse) => {
+            .subscribe((reponse: any) => {
+                let signUpResponce = reponse['data'];
+                if ('CODE' in signUpResponce) {
+                    if (signUpResponce['CODE'] == 'EXISTS') {
+                        this.toastr.showInfo('User with same username and email already exists');
+                    } else {
+                        let userdata = signUpResponce;
+                        let bodyText = "Thank you for registering in IISF 2019. Your Username is " + userdata.password + " and password is " + userdata.password;
+                        let fullName = userdata.firstname + " " + userdata.lastname;
+                        let emailTemplate = {
+                            "title": "Registration Successful",
+                            "mailBody": bodyText,
+                            "toMail": userdata.email,
+                            "fullName": fullName
+                        };
+                        // console.log(emailTemplate);
+                        this.router.navigate(['/login']);
+                        // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
+                        this.httpClient.post(this.emailUrl, emailTemplate, {
+                            headers: new HttpHeaders({
+                                'content-type': 'application/x-www-form-urlencoded',
+                            })
+                        }).subscribe(res => {
+                            this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
+                        }, (error) => {
+                            // this.toastr.showError('Server error');
+                        });
+                    }
+                } else {
+                    let userdata = signUpResponce;
+                    let bodyText = "Thank you for registering in IISF 2019. Your Username is " + userdata.password + " and password is " + userdata.password;
+                    let fullName = userdata.firstname + " " + userdata.lastname;
+                    let emailTemplate = {
+                        "title": "Registration Successful",
+                        "mailBody": bodyText,
+                        "toMail": userdata.email,
+                        "fullName": fullName
+                    }
+                    // console.log(emailTemplate);
+                    this.router.navigate(['/login']);
 
-                this.toastr.showSuccess('You are registered successfully');
-                this.router.navigate(['/login']);
+                    // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
+                    this.httpClient.post(this.emailUrl, emailTemplate, {
+                        headers: new HttpHeaders({
+                            'content-type': 'application/x-www-form-urlencoded',
+                        })
+                    }).subscribe(res => {
+                        this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
+                    }, (error) => {
+                        // this.toastr.showError('Server error');
+                    });
+                }
+
             }, (error) => {
 
                 this.toastr.showError('Server error');

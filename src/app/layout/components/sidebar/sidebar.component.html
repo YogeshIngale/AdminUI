@@ -5,8 +5,12 @@
             <span>{{ 'Dashboard' | translate }}</span>
         </a>
         <a routerLink="/sections" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-list-alt"></i>&nbsp;
+            <i class="fa fa-list-alt"></i>&nbsp;
             <span>{{ 'Sections' | translate }}</span>
+        </a>
+        <a routerLink="/system-users" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-users"></i>&nbsp;
+            <span>{{ 'Users' | translate }}</span>
         </a>
         <!-- <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
@@ -25,6 +29,10 @@
             <i class="fa fa-fw fa-edit"></i>&nbsp;
             <span>Create Form</span>
         </a>
+        <a [routerLink]="['/login']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-power-off" (click)="onLoggedout()"></i>&nbsp;
+            <span>Log Out</span>
+        </a>
         <!-- <a [routerLink]="['/managesections']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-table"></i>&nbsp;
             <span>Manage Sections</span>
@@ -41,8 +49,12 @@
                 <span>{{ 'Dashboard' | translate }}</span>
             </a>
             <a routerLink="/sections" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+                <i class="fa fa-fw fa fa-cogs"></i>&nbsp;
                 <span>{{ 'Sections' | translate }}</span>
+            </a>
+            <a [routerLink]="['/login']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                <i class="fa fa-fw fa-edit" (click)="onLoggedout()"></i>&nbsp;
+                <span>Log Out</span>
             </a>
         </div>
     </ng-template>
