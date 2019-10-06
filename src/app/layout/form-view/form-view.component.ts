@@ -53,7 +53,6 @@ export class FormViewComponent implements OnInit {
             this.data = JSON.parse(params);
             this.checkInObj = new CheckInInterface();
             this.checkInObj.form = this.data.form;
-            console.log(this.data.form);
             // this.checkInObj.form.formData = this.checkInObj.form.formData.replace(/\\"/g, '\\"');
 
             // let formData = JSON.parse(this.checkInObj.form.formData);
@@ -151,9 +150,6 @@ export class FormViewComponent implements OnInit {
                     this.assessmentData[element.indexPosition].splice(indexNum, 1);
                 }
             });
-
-            console.log(this.assessmentData);
-            console.log(this.conditionalQuestions);
 
             // getting current page questions with radio buttons first
             this.questionSetPerPage = this.assessmentData[this.assessmentDataIndex];
@@ -309,7 +305,6 @@ export class FormViewComponent implements OnInit {
         this.checkValidation();
         // calculating total questions and current question
         this.getTotalNonEmptyQuestionCount();
-        // console.log(this.answerData);
     }
 
     /**Function for going on previous data after clicking on previous button */

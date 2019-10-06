@@ -29,7 +29,6 @@ export class HeaderComponent implements OnInit {
         this.pushRightClass = 'push-right';
         if (localStorage.getItem('userDetails')) {
             this.userdata = JSON.parse(localStorage.getItem('userDetails'));
-            // console.log(this.userdata);
         }
     }
 

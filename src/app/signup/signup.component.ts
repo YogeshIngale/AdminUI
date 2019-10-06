@@ -104,14 +104,15 @@ export class SignupComponent implements OnInit {
                             "title": "Registration Successful",
                             "mailBody": bodyText,
                             "toMail": userdata.email,
-                            "fullName": fullName
+                            "fullName": fullName,
+                            crossDomain: true,
+                            dataType: 'jsonp',
                         };
-                        // console.log(emailTemplate);
                         this.router.navigate(['/login']);
                         // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
                         this.httpClient.post(this.emailUrl, emailTemplate, {
                             headers: new HttpHeaders({
-                                'content-type': 'application/x-www-form-urlencoded',
+                                'content-type': 'application/json'
                             })
                         }).subscribe(res => {
                             this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
@@ -127,15 +128,16 @@ export class SignupComponent implements OnInit {
                         "title": "Registration Successful",
                         "mailBody": bodyText,
                         "toMail": userdata.email,
-                        "fullName": fullName
-                    }
-                    // console.log(emailTemplate);
+                        "fullName": fullName,
+                        crossDomain: true,
+                        dataType: 'jsonp',
+                    };
                     this.router.navigate(['/login']);
 
                     // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
                     this.httpClient.post(this.emailUrl, emailTemplate, {
                         headers: new HttpHeaders({
-                            'content-type': 'application/x-www-form-urlencoded',
+                            'content-type': 'application/json'
                         })
                     }).subscribe(res => {
                         this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
