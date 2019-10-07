@@ -28,6 +28,7 @@
     "angular-formio": "^3.27.1",
     "chart.js": "2.7.3",
     "core-js": "2.5.7",
+    "file-saver": "^2.0.2",
     "font-awesome": "4.7.0",
     "html2canvas": "^1.0.0-rc.4",
     "jspdf": "^1.5.3",
@@ -36,6 +37,7 @@
     "ngx-toastr": "^9.2.0",
     "rxjs": "6.5.2",
     "tslib": "^1.9.0",
+    "xlsx": "^0.15.1",
     "yarn": "1.16.0",
     "zone.js": "~0.9.1"
   },

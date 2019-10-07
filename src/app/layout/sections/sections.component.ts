@@ -26,6 +26,8 @@ export class SectionsComponent implements OnInit {
     public sectionUrl: string;
     public userforms: string;
     public baseUrl: string;
+    public shwoMessage: boolean = false;
+    public delegateId = '';
     constructor(private httpClient: HttpClient, private modalService: NgbModal, private router: Router, private toastr: CommonToastrService, private baseService: BaseService) {
         localStorage.removeItem('section');
         localStorage.removeItem('userformdata');
@@ -95,6 +97,11 @@ export class SectionsComponent implements OnInit {
                         });
                     });
                     this.sectionList = viewSections;
+                    if (setionsAllowed.length > 0) {
+                        let userRes = JSON.parse(localStorage.getItem('userDetails'));
+                        this.shwoMessage = true;
+                        this.delegateId = this.sectionList[0]['sectioncode'] + '' + userRes['userid'];
+                    }
                 } else {
                     this.sectionList = sectionListArray;
                 }

@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
 import * as jsPDF from 'jspdf';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+import { BaseService } from 'src/app/shared/services/base.service';
 
 const URL = environment.apiHost + 'upload';
 @Component({
@@ -23,6 +24,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
         itemAlias: 'attachment',
         allowedFileType: ['image', 'pdf', 'compress', 'doc', 'xls', 'ppt']
     });
+    public downloadUrl = '';
     public hasBaseDropZoneOver = false;
     public hasAnotherDropZoneOver = false;
     public formData = new FormData();
@@ -62,11 +64,14 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     public submissionbaseUrl: string;
     percentDone: number;
     uploadSuccess = false;
-    constructor(private httpClient: HttpClient, private router: Router, private toastr: CommonToastrService) {
+    sectionUrl: string;
+    constructor(private httpClient: HttpClient, private router: Router, private toastr: CommonToastrService,private baseService:BaseService) {
         localStorage.removeItem('form');
         this.isFormSubmitted = false;
         this.baseUrl = `${environment.apiHost}forms/getFormbyId`;
         this.submissionbaseUrl = `${environment.apiHost}userforms`;
+        this.sectionUrl = `${environment.apiHost}sections`;
+        this.downloadUrl = `${environment.apiHost}userforms/downloadfile`;
         this.answeredformData = {
             data: {}
         };
@@ -252,4 +257,16 @@ export class UserFormComponent implements OnInit, AfterViewInit {
                 this.toastr.showError('Server error');
             });
     }
+
+    userforms(userforms: any, userid: { 'userid': any; }): string {
+        throw new Error("Method not implemented.");
+    }
+
+    downloadfile(filename) {
+        const downloadObj = {
+            filename: filename
+        };
+        window.open(this.baseService.formUrlParam(this.downloadUrl, downloadObj), '_blank')
+    }
+
 }

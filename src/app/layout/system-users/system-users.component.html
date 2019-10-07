@@ -3,11 +3,14 @@
 </div>
 
 <div class="row">
-        <div class="w-100 p-3"><b>Total Users ({{ usersList.length }})</b></div>
+    <div class="w-100 px-3 pb-2"><button class="btn btn-outline-primary mx-2" (click)="exportAsXLSX()"><i
+                class="fa fa-download px-2" aria-hidden="true"></i>Export to Excel</button><b>Total Users
+            ({{ usersList.length }})</b></div>
     <div class="col-lg-4 col-md-4 form-view">
         <ng-container *ngFor="let item of usersList; let i = index">
             <div class="col-12 mb-3" (click)="getFormbysectionid(item, i)">
-                <app-stat [bgClass]="'warning'" [icon]="'fa-user'" [count]="0" [label]="item.userid"></app-stat>
+                <app-stat [bgClass]="'warning'" [icon]="'fa-user'" [count]="0"
+                    [label]="item?.user?.firstname+' '+item?.user?.lastname"></app-stat>
             </div>
         </ng-container>
     </div>
@@ -19,12 +22,9 @@
                         {{ formObj?.formname }}
                     </div>
                     <div class="card-body table-responsive" *ngIf="isViewForm">
-                        <formio
-                            id="formio"
-                            [form]="{ title: formObj.formname, components: formObj.formData.components }"
-                            [submission]="answeredformData"
-                            [readOnly]="true"
-                        ></formio>
+                        <formio id="formio"
+                            [form]="{ title: formObj?.formname, components: formObj?.formData?.components }"
+                            [submission]="answeredformData" [readOnly]="true"></formio>
                         <ng-container *ngIf="attachment != null && attachment != undefined">
                             <div class="container mt-5 mb-5" *ngIf="attachment.length > 0">
                                 <div class="row">
@@ -33,7 +33,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>
-                                                    <!-- <th colspan="2">Action</th> -->
+                                                    <th>Action</th>
                                                     <!-- <th>Actions</th> -->
                                                 </tr>
                                             </thead>
@@ -42,11 +42,12 @@
                                                     <td>
                                                         {{ link.originalname }}
                                                     </td>
-                                                    <!-- <td><button class="btn btn-default btn-primary">Download</button>
+                                                    <td><button class="btn btn-default btn-primary"
+                                                            (click)="downloadfile(link.filename)">Download</button>
                                                     </td>
-                                                    <td>
+                                                    <!-- <td>
                                                         <button class="btn btn-default btn-primary"
-                                                            (click)="open(content); fileSrc = link.filename">
+                                                            (click)="open(content,link.filename)">
                                                             View
                                                         </button>
                                                     </td> -->
@@ -72,7 +73,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <iframe src="'http://docs.google.com/viewer?url='+fileSr" width="100%" height="400px" style="border: none;"></iframe>
+        <iframe [src]="fileSrc | safe" width="100%" height="400px"
+            style="border: none;"></iframe>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Close</button>
