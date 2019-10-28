@@ -170,8 +170,6 @@ export class QuestionSetComponent implements OnInit {
                 }
             });
 
-            // console.log(this.assessmentData);
-            // console.log(this.conditionalQuestions);
 
             // getting current page questions with radio buttons first
             this.questionSetPerPage = this.assessmentData[this.assessmentDataIndex];
@@ -297,7 +295,6 @@ export class QuestionSetComponent implements OnInit {
         this.checkValidation();
         // calculating total questions and current question
         this.getTotalNonEmptyQuestionCount();
-        // console.log(this.answerData);
     }
 
     /**Function for going on previous data after clicking on previous button */

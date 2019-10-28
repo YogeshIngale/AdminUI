@@ -23,7 +23,8 @@ export class SignupComponent implements OnInit {
     public sectionUrl: string;
     public baseUrl = environment.apiHost;
     // public emailUrl = "http://www.scienceindiafest.org/iisf-registration/members/sendMailByApi";
-    public emailUrl = "http://dashboard.scienceindiafest.org/mail/testmail.php";
+    // public emailUrl = "http://dashboard.scienceindiafest.org/mail/testmail.php";
+    public emailUrl = "../../assets/email/testmail.php";
 
     @ViewChild('regform', { static: false }) public form: NgForm;
     public countriesArray = [];
@@ -37,14 +38,10 @@ export class SignupComponent implements OnInit {
 
         this.signUpService.getJsonData("../../assets/json/countries.json").subscribe((res) => {
             this.countriesArray = res['countries'];
-        })
-
-        // this.emailUrl = this.location['_platformLocation']['location']['origin'] + '/' + this.emailUrl;
-        this.emailUrl = this.emailUrl;
+        });
     }
 
     selectStep(indexNum) {
-        // debugger;
         switch (indexNum) {
             case 0:
                 this.isFirstStep = true;
@@ -104,16 +101,13 @@ export class SignupComponent implements OnInit {
                             "title": "Registration Successful",
                             "mailBody": bodyText,
                             "toMail": userdata.email,
-                            "fullName": fullName
+                            "fullName": fullName,
+                            'crossDomain': true,
+                            'dataType': 'jsonp',
                         };
-                        // console.log(emailTemplate);
+                        let emailGetUrl = this.emailUrl + '?to=' + emailTemplate.toMail + '&title=' + emailTemplate.title + '&body=' + emailTemplate.mailBody;
                         this.router.navigate(['/login']);
-                        // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
-                        this.httpClient.post(this.emailUrl, emailTemplate, {
-                            headers: new HttpHeaders({
-                                'content-type': 'application/x-www-form-urlencoded',
-                            })
-                        }).subscribe(res => {
+                        this.httpClient.get(emailGetUrl).subscribe(res => {
                             this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
                         }, (error) => {
                             // this.toastr.showError('Server error');
@@ -127,17 +121,14 @@ export class SignupComponent implements OnInit {
                         "title": "Registration Successful",
                         "mailBody": bodyText,
                         "toMail": userdata.email,
-                        "fullName": fullName
-                    }
-                    // console.log(emailTemplate);
+                        "fullName": fullName,
+                        'crossDomain': true,
+                        'dataType': 'jsonp',
+                    };
+                    debugger;
+                    let emailGetUrl = this.emailUrl + '?to=' + emailTemplate.toMail + '&title=' + emailTemplate.title + '&body=' + emailTemplate.mailBody;
                     this.router.navigate(['/login']);
-
-                    // let pareamData = "toMail=" + userdata.email + "&mailBody=" + bodyText + "&=title='Registration Successful'";
-                    this.httpClient.post(this.emailUrl, emailTemplate, {
-                        headers: new HttpHeaders({
-                            'content-type': 'application/x-www-form-urlencoded',
-                        })
-                    }).subscribe(res => {
+                    this.httpClient.get(emailGetUrl).subscribe(res => {
                         this.toastr.showSuccess('You are registered and username and password has been sent to your email id successfully');
                     }, (error) => {
                         // this.toastr.showError('Server error');

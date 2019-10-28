@@ -8,13 +8,10 @@
                     {{ formObj?.formname }}
                 </div>
                 <div class="card-body table-responsive" *ngIf="isViewForm">
-                    <formio
-                        id="formio"
-                        [form]="{ title: formObj.formname, components: formObj.formData.components }"
-                        [submission]="answeredformData"
-                        [readOnly]="isFormSubmitted"
-                    ></formio>
-                    <div class="container mt-5 mb-5" *ngIf="formObj.isFileUpload">
+                    <formio id="formio" [form]="{ title: formObj.formname, components: formObj.formData.components }"
+                        [submission]="answeredformData" [readOnly]="isFormSubmitted"></formio>
+                    <div class="container mt-5 mb-5"
+                        *ngIf="formObj.isFileUpload && !isFormSubmitted; else uplodedFiles">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -22,15 +19,17 @@
                                         <label class="col-sm-3 col-form-label" for="files">Documents</label>
                                         <div class="col-sm-9">
                                             <span class="hidden-file">
-                                  <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (onFileSelected)="onFileSelected($event)" />
-                                </span>
+                                                <input type="file" #fileInput ng2FileSelect [uploader]="uploader"
+                                                    (onFileSelected)="onFileSelected($event)" />
+                                            </span>
                                             <div class="btn-group" (click)="fileInput.click()">
-                                                <button type="button" class="btn btn-primary btn-group-icon btn-group-divider">
-                                       <i class="ion-plus-round"></i>
-                                  </button>
+                                                <button type="button"
+                                                    class="btn btn-primary btn-group-icon btn-group-divider">
+                                                    <i class="ion-plus-round"></i>
+                                                </button>
                                                 <button type="button" class="btn btn-primary">
-                                     Add Documents
-                                  </button>
+                                                    Add Documents
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -50,9 +49,7 @@
                                             <td>
                                                 {{ item?.file?.name }}
                                             </td>
-                                            <td>
-                                                {{ item?.file?.size/1024/1024 | number:'.2' }} MB
-                                            </td>
+                                            <td>{{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB</td>
                                             <td>
                                                 <!-- <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
                              <span class="glyphicon glyphicon-trash"></span>
@@ -65,9 +62,45 @@
                             </div>
                         </div>
                     </div>
+                    <ng-template #uplodedFiles>
+                        <ng-container *ngIf="uplodedArray != null && uplodedArray != undefined">
+                            <div class="container mt-5 mb-5" *ngIf="uplodedArray.length > 0">
+                                <div class="row">
+                                    <div class="col-md-9 mt-5">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <!-- <th colspan="2">Action</th> -->
+                                                    <!-- <th>Actions</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let link of uplodedArray">
+                                                    <td>
+                                                        {{ link.originalname }}
+                                                    </td>
+                                                    <td><button class="btn btn-default btn-primary"
+                                                            (click)="downloadfile(link.filename)">Download</button>
+                                                    </td>
+                                                    <!--    <td>
+                                                                <button class="btn btn-default btn-primary"
+                                                                    (click)="open(content); fileSrc = link.filename">
+                                                                    View
+                                                                </button>
+                                                            </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-template>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" *ngIf="!isFormSubmitted " class="btn btn-primary" (click)="submitform()" value="Submit" />
+                    <input type="submit" *ngIf="!isFormSubmitted" class="btn btn-primary" (click)="submitform()"
+                        value="Submit" />
                     <button class="btn btn-primary" *ngIf="isFormSubmitted" (click)="downloadPdf()">Print Page</button>
                 </div>
             </div>

@@ -26,6 +26,8 @@ export class SectionsComponent implements OnInit {
     public sectionUrl: string;
     public userforms: string;
     public baseUrl: string;
+    public shwoMessage: boolean = false;
+    public delegateId = '';
     constructor(private httpClient: HttpClient, private modalService: NgbModal, private router: Router, private toastr: CommonToastrService, private baseService: BaseService) {
         localStorage.removeItem('section');
         localStorage.removeItem('userformdata');
@@ -46,9 +48,9 @@ export class SectionsComponent implements OnInit {
     }
     editSection(content, section) {
         this.modalService.open(content, { size: 'lg' });
-        //localStorage.setItem('section',JSON.stringify(section));
+        // localStorage.setItem('section',JSON.stringify(section));
 
-        //this.router.navigate(['/createform']);
+        // this.router.navigate(['/createform']);
     }
     addnewSection(content) {
         this.modalService.open(content, { size: 'lg' });
@@ -60,33 +62,33 @@ export class SectionsComponent implements OnInit {
             })
         }).subscribe((reponse) => {
             //
-            let sectionListArray = reponse['data'];
-            let user = JSON.parse(localStorage.getItem('userDetails'));
-            let userid = {
-                "userid": user.userid
-            }
+            const sectionListArray = reponse['data'];
+            const user = JSON.parse(localStorage.getItem('userDetails'));
+            const userid = {
+                'userid': user.userid
+            };
             this.httpClient.get(this.baseService.formUrlParam(this.userforms, userid), {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
                 })
             }).subscribe((res) => {
-                let setionsAllowed = res['data'];
-                let viewSections = [];
-                if (setionsAllowed.length>0) {
+                const setionsAllowed = res['data'];
+                const viewSections = [];
+                if (setionsAllowed.length > 0) {
                     sectionListArray.forEach(element => {
                         setionsAllowed.forEach(sectionAllowed => {
-                            if ((sectionAllowed.userid == user.userid) && (element.sectionid == sectionAllowed.sectionid)) {
+                            if ((sectionAllowed.userid === user.userid) && (element.sectionid === sectionAllowed.sectionid)) {
 
-                                if (viewSections != null && viewSections != undefined) {
+                                if (viewSections != null && viewSections !== undefined) {
                                     if (viewSections.length > 0) {
-                                        let findindex = viewSections.findIndex(x => (x.sectionid == element.sectionid));
-                                        if (findindex == (-1)) {
+                                        const findindex = viewSections.findIndex(x => (x.sectionid === element.sectionid));
+                                        if (findindex === (-1)) {
                                             viewSections.push(element);
                                         }
                                     } else {
                                         // debugger;
                                         viewSections.push(element);
-                                        let formData = sectionAllowed.formAnswerdData;
+                                        const formData = sectionAllowed;
                                         localStorage.setItem('userformdata', JSON.stringify(formData));
                                     }
                                 }
@@ -95,6 +97,11 @@ export class SectionsComponent implements OnInit {
                         });
                     });
                     this.sectionList = viewSections;
+                    if (setionsAllowed.length > 0) {
+                        let userRes = JSON.parse(localStorage.getItem('userDetails'));
+                        this.shwoMessage = true;
+                        this.delegateId = this.sectionList[0]['sectioncode'] + '' + userRes['userid'];
+                    }
                 } else {
                     this.sectionList = sectionListArray;
                 }

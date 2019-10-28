@@ -7,6 +7,7 @@ import { PageHeaderModule } from '../../shared';
 import { FormioModule } from 'angular-formio';
 import { SharedModule } from 'src/app/shared-module/shared-module.module';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ExcelService } from 'src/app/shared/services/export-excel.service';
 
 @NgModule({
     imports: [CommonModule, UserFormRoutingModule, PageHeaderModule, FormsModule, FormioModule, SharedModule, FileUploadModule],

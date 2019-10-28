@@ -1,5 +1,8 @@
 <div>
     <app-page-header [heading]="'Sections'" [icon]="'fa-list-alt'"></app-page-header>
+    <div class="alert alert-info" role="alert" *ngIf="shwoMessage">
+            You have successfully registered for following event and your delegate id is <b>{{delegateId}}</b>
+        </div>
     <div class="row">
         <ng-container *ngFor="let item of sectionList; let i = index">
             <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-4" (click)="gotoForm(item)">
@@ -39,7 +42,8 @@
 
             <!-- Message -->
             <div class="form-group">
-                <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3" placeholder="Message"></textarea>
+                <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"
+                    placeholder="Message"></textarea>
             </div>
 
             <!-- Copy -->

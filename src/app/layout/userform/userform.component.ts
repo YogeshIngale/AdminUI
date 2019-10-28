@@ -4,8 +4,9 @@ import { HttpClient, HttpHeaders, HttpEventType, HttpResponse } from '@angular/c
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CommonToastrService } from 'src/app/shared/services/common-toastr-service.service';
-import * as jsPDF from 'jspdf'
+import * as jsPDF from 'jspdf';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+import { BaseService } from 'src/app/shared/services/base.service';
 
 const URL = environment.apiHost + 'upload';
 @Component({
@@ -23,16 +24,18 @@ export class UserFormComponent implements OnInit, AfterViewInit {
         itemAlias: 'attachment',
         allowedFileType: ['image', 'pdf', 'compress', 'doc', 'xls', 'ppt']
     });
-    public hasBaseDropZoneOver: boolean = false;
-    public hasAnotherDropZoneOver: boolean = false;
+    public downloadUrl = '';
+    public hasBaseDropZoneOver = false;
+    public hasAnotherDropZoneOver = false;
     public formData = new FormData();
     public answeredformData: any = {};
     public isViewForm = false;
-    public modalTitle = "Confirmation";
-    public modalBody = "Are you sure you want to submit this form?";
+    public modalTitle = 'Confirmation';
+    public modalBody = 'Are you sure you want to submit this form?';
     public requiredQuesArray = [];
     public isFormSubmitted: boolean;
     public attachment = [];
+    public uplodedArray = [];
     public formObj: Object = {
         sectionid: 0,
         formname: '',
@@ -60,12 +63,15 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     public baseUrl: string;
     public submissionbaseUrl: string;
     percentDone: number;
-    uploadSuccess: boolean;
-    constructor(private httpClient: HttpClient, private router: Router, private toastr: CommonToastrService) {
+    uploadSuccess = false;
+    sectionUrl: string;
+    constructor(private httpClient: HttpClient, private router: Router, private toastr: CommonToastrService,private baseService:BaseService) {
         localStorage.removeItem('form');
         this.isFormSubmitted = false;
         this.baseUrl = `${environment.apiHost}forms/getFormbyId`;
         this.submissionbaseUrl = `${environment.apiHost}userforms`;
+        this.sectionUrl = `${environment.apiHost}sections`;
+        this.downloadUrl = `${environment.apiHost}userforms/downloadfile`;
         this.answeredformData = {
             data: {}
         };
@@ -74,8 +80,9 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         if (localStorage.getItem('userformdata')) {
             this.isFormSubmitted = true;
-            this.answeredformData = JSON.parse(localStorage.getItem('userformdata'));
-            console.log(this.answeredformData);
+            const userformdata = JSON.parse(localStorage.getItem('userformdata'));
+            this.answeredformData = userformdata.formAnswerdData;
+            this.uplodedArray = userformdata.attachment;
         }
     }
 
@@ -89,16 +96,15 @@ export class UserFormComponent implements OnInit, AfterViewInit {
 
     public getFormbysectionid() {
 
-        let sectionObj = JSON.parse(localStorage.getItem('section'));
-        return this.httpClient.get(this.baseUrl + "?sectionid=" + sectionObj.sectionid, {
+        const sectionObj = JSON.parse(localStorage.getItem('section'));
+        return this.httpClient.get(this.baseUrl + '?sectionid=' + sectionObj.sectionid, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
             })
         }).subscribe((reponse) => {
-
             this.formlist = reponse['data'];
             this.formObj = this.formlist[0];
-            let formData = this.formObj['formData'].components;
+            const formData = this.formObj['formData'].components;
             if ('components' in this.formObj['formData']) {
                 if (formData.length > 0) {
                     formData.forEach((element, index) => {
@@ -137,32 +143,33 @@ export class UserFormComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
                 this.isViewForm = true;
             }, 100);
-            console.log(this.requiredQuesArray);
-            console.log(this.formObj['formData'].components);
         }, (error) => {
 
             this.toastr.showError('Server error');
         });
     }
     submitform() {
-        let userRes = JSON.parse(localStorage.getItem('userDetails'));
-        //this.userRole=userRes['usertype'];
+
+        if (this.formObj['isFileUpload']) {
+            if (this.attachment.length === 0) {
+                this.toastr.showInfo('Please upload file');
+                return false;
+            }
+        }
+
+        const userRes = JSON.parse(localStorage.getItem('userDetails'));
+        // this.userRole=userRes['usertype'];
         this.answeredformObj['formid'] = this.formObj['formid'];
         this.answeredformObj['userid'] = userRes['userid'];
         this.answeredformObj['sectionid'] = this.formObj['sectionid'];
         this.answeredformObj['formAnswerdData'] = this.answeredformData;
         this.answeredformObj['attachment'] = this.attachment;
-        let ansKeysVal = this.answeredformObj['formAnswerdData'].data;
-        let ansKeys = Object.keys(this.answeredformObj['formAnswerdData'].data);
-        // console.log((this.answeredformObj['formAnswerdData']));
-        console.log((this.answeredformData));
-        let requiredElementsFields = [];
-        console.log(this.requiredQuesArray);
-        console.log(ansKeys);
+        const ansKeysVal = this.answeredformObj['formAnswerdData'].data;
+        const ansKeys = Object.keys(this.answeredformObj['formAnswerdData'].data);
+        const requiredElementsFields = [];
         this.requiredQuesArray.forEach((element, index) => {
-            for (let key of ansKeys) {
-                if ((element.key == key) && (!element.isdepandant) && ansKeysVal[key] == '') {
-                    console.log(element.key);
+            for (const key of ansKeys) {
+                if ((element.key === key) && (!element.isdepandant) && ansKeysVal[key] === '') {
                     requiredElementsFields.push(false);
                 }
             }
@@ -195,8 +202,8 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     elementInViewport(el) {
         let top = el.offsetTop;
         let left = el.offsetLeft;
-        let width = el.offsetWidth;
-        let height = el.offsetHeight;
+        const width = el.offsetWidth;
+        const height = el.offsetHeight;
 
         while (el.offsetParent) {
             el = el.offsetParent;
@@ -213,7 +220,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     }
 
     downloadPdf() {
-        const elementToPrint = document.getElementById('obrz'); //The html element to become a pdf
+        const elementToPrint = document.getElementById('obrz'); // The html element to become a pdf
         const pdf = new jsPDF('p', 'pt', 'a3');
         pdf.addHTML(elementToPrint, () => {
             pdf.save('print_form.pdf');
@@ -229,20 +236,18 @@ export class UserFormComponent implements OnInit, AfterViewInit {
 
     public onFileSelected(event: EventEmitter<File[]>) {
         const file: File = event[0];
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append('file', file);
-        console.log(this.formData);
-        let url = environment.apiHost + 'upload';
+        const url = environment.apiHost + 'upload';
         this.httpClient.post(url, formData, { reportProgress: true, observe: 'events' })
             .subscribe(resEvent => {
                 if (resEvent.type === HttpEventType.UploadProgress) {
                     this.percentDone = Math.round(100 * resEvent.loaded / resEvent.total);
                 } else if (resEvent instanceof HttpResponse) {
-                    console.log(resEvent);
-                    let fileObj = {
+                    const fileObj = {
                         filename: resEvent['body']['filename'],
                         originalname: resEvent['body']['originalname']
-                    }
+                    };
                     this.attachment.push(fileObj);
                     this.uploadSuccess = true;
                 }
@@ -252,4 +257,16 @@ export class UserFormComponent implements OnInit, AfterViewInit {
                 this.toastr.showError('Server error');
             });
     }
+
+    userforms(userforms: any, userid: { 'userid': any; }): string {
+        throw new Error("Method not implemented.");
+    }
+
+    downloadfile(filename) {
+        const downloadObj = {
+            filename: filename
+        };
+        window.open(this.baseService.formUrlParam(this.downloadUrl, downloadObj), '_blank')
+    }
+
 }
