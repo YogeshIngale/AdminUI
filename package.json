@@ -26,7 +26,7 @@
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "angular-formio": "^3.27.1",
-    "chart.js": "2.7.3",
+    "chart.js": "2.9.4",
     "core-js": "2.5.7",
     "file-saver": "^2.0.2",
     "font-awesome": "4.7.0",
